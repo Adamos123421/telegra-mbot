@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTonAddress, useTonConnectUI,TonConnectButton } from '@tonconnect/ui-react';
-import reactLogo from '/src/assets/react.svg';
-import tonLogo from '/src/assets/ton.svg';
-import '/src/App.css';
+import reactLogo from './src/assets/react.svg';
+import tonLogo from './src/assets/ton.svg';
+import './src/App.css';
 
 const generateUniqueNumber = (boc) => {
   let hash = 0;
