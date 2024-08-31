@@ -15,11 +15,12 @@ const SwapForm = () => {
   const [isFromDropdownOpen, setIsFromDropdownOpen] = useState(false);
   const [isToDropdownOpen, setIsToDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [loadingRate, setLoadingRate] = useState(false); // Add loading state for exchange rate
+  const [loadingRate, setLoadingRate] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState('');
-
+  
   const fromDropdownRef = useRef(null);
   const toDropdownRef = useRef(null);
+  const debounceTimer = useRef(null); // Ref to store the debounce timer
 
   const proxyUrl = 'https://api.allorigins.win/get?url=';
   const exchangeRateUrl = 'https://estimate-pwil4mmbgq-uc.a.run.app';
@@ -51,14 +52,24 @@ const SwapForm = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedFromCurrency && selectedToCurrency) {
-      // Only fetch exchange rate if there's a valid amount to send
-      if (amountToSend) {
+    // Clear the previous timer if the user keeps typing
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    // Set a new timer to wait 500 ms before fetching the exchange rate
+    debounceTimer.current = setTimeout(() => {
+      if (selectedFromCurrency && selectedToCurrency && amountToSend) {
         fetchExchangeRate();
       } else {
         setReceivedAmount(''); // Reset received amount if amountToSend is empty
       }
-    }
+    }, 500); // 500 ms delay
+
+    // Cleanup function to clear the timer when the component unmounts or dependencies change
+    return () => {
+      clearTimeout(debounceTimer.current);
+    };
   }, [selectedFromCurrency, selectedToCurrency, amountToSend]);
 
   const fetchExchangeRate = async () => {
@@ -67,8 +78,6 @@ const SwapForm = () => {
     const trimmedFromNetwork = fromNetwork ? fromNetwork.replace(')', '') : '';
     const trimmedToNetwork = toNetwork ? toNetwork.replace(')', '') : '';
     const amount = parseFloat(amountToSend) || 0;
-    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-    await delay(500);
 
     const requestBody = {
       fromNetwork: trimmedFromNetwork,
@@ -78,21 +87,19 @@ const SwapForm = () => {
       toCurrency: toCurrency.trim()
     };
 
-    setLoadingRate(true); // Set loadingRate to true before fetching
+    setLoadingRate(true);
 
     try {
       const response = await fetch('/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-          ,mode:"'no-cors"
+          
         },
-        
         body: JSON.stringify(requestBody)
       });
 
       const result = await response.json();
-      
 
       if (response.ok) {
         setReceivedAmount(result.data.amount);
@@ -102,7 +109,7 @@ const SwapForm = () => {
     } catch (error) {
       console.error('Error fetching exchange rate:', error);
     } finally {
-      setLoadingRate(false); // Set loadingRate to false after fetching
+      setLoadingRate(false);
     }
   };
 
@@ -111,7 +118,7 @@ const SwapForm = () => {
   );
 
   const handleClickOutside = (event) => {
-   
+    // Function to handle click outside of dropdowns
   };
 
   useEffect(() => {
@@ -123,12 +130,12 @@ const SwapForm = () => {
 
   const handleFromDropdownToggle = () => {
     setIsFromDropdownOpen(prev => !prev);
-    setIsToDropdownOpen(false); // Close the other dropdown if open
+    setIsToDropdownOpen(false);
   };
 
   const handleToDropdownToggle = () => {
     setIsToDropdownOpen(prev => !prev);
-    setIsFromDropdownOpen(false); // Close the other dropdown if open
+    setIsFromDropdownOpen(false);
   };
 
   const handleDropdownItemClick = (currency, isFrom) => {
@@ -151,11 +158,10 @@ const SwapForm = () => {
       return;
     }
     const [fromCurrency, fromNetworkPart] = selectedFromCurrency.split(' (');
-  const [toCurrency, toNetworkPart] = selectedToCurrency.split(' (');
-  const fromNetwork = fromNetworkPart ? fromNetworkPart.replace(')', '') : '';
-  const toNetwork = toNetworkPart ? toNetworkPart.replace(')', '') : '';
-  
-    // Log all the parameters
+    const [toCurrency, toNetworkPart] = selectedToCurrency.split(' (');
+    const fromNetwork = fromNetworkPart ? fromNetworkPart.replace(')', '') : '';
+    const toNetwork = toNetworkPart ? toNetworkPart.replace(')', '') : '';
+
     console.log('Exchange Details:');
     console.log(`Amount to Send: ${amountToSend}`);
     console.log(`From Currency: ${fromCurrency.trim()}`);
