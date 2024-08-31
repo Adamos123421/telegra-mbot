@@ -189,7 +189,7 @@ const SwapForm = () => {
       toCurrency: toCurrency.trim(),
       amount: parseFloat(amountToSend),
       recipientAddress: recipientAddress.trim(),
-      userId: toString(userId)
+      userId: userId.toString()
     };
   
     setIsLoading(true); // Start loading
@@ -209,6 +209,7 @@ const SwapForm = () => {
         if (result.data === 'Something went wrong') {
           setHasError(true);
           setTimeout(() => setHasError(false), 1000);
+          alert(userId)
           alert('Something went wrong. Please verify the deposit address.');
         } else {
           console.log('Exchange created successfully:', result);
