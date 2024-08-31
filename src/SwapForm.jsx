@@ -59,6 +59,8 @@ const SwapForm = () => {
 
       
       tgWebApp.ready();
+      window.Telegram.WebApp.expand();
+      window.Telegram.WebApp.disableVerticalSwipes();
 
      
       
