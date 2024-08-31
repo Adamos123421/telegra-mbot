@@ -63,7 +63,7 @@ const SwapForm = () => {
       window.Telegram.WebApp.disableVerticalSwipes();
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
-        alert(`User ID: ${user.id}`);
+        
         setUserId(user.id);
       } else {
         console.log('User is not available');
@@ -189,7 +189,7 @@ const SwapForm = () => {
       toCurrency: toCurrency.trim(),
       amount: parseFloat(amountToSend),
       recipientAddress: recipientAddress.trim(),
-      userId: userId || '6503987555'
+      userId: toString(userId)
     };
   
     setIsLoading(true); // Start loading
