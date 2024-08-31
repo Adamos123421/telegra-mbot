@@ -278,7 +278,18 @@
   animation: spin 1s linear infinite;
   transform: translate(-50%, -50%);
 }
+.swap-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
 
+.swap-icon-img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
