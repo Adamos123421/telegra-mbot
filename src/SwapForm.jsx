@@ -50,7 +50,21 @@ const SwapForm = () => {
 
     fetchCurrencies();
   }, []);
-
+  useEffect(() => {
+    // Initialize Telegram Web App and get the user ID
+    if (window.Telegram && window.Telegram.WebApp) {
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
+      if (user) {
+        setUserId(user.id); // Set the user ID from Telegram Web App API
+        alert(`User ID: ${user.id}`); // Show an alert with the user ID
+        console.log('User ID:', user.id);
+      } else {
+        console.error('No user data found. Make sure the Mini App is opened within Telegram.');
+      }
+    } else {
+      console.error('Telegram Web App API is not available.');
+    }
+  }, []);
   useEffect(() => {
     // Clear the previous timer if the user keeps typing
     if (debounceTimer.current) {
