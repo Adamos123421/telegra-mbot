@@ -209,7 +209,7 @@ const SwapForm = () => {
         if (result.data === 'Something went wrong') {
           setHasError(true);
           setTimeout(() => setHasError(false), 1000);
-          alert(userId)
+          
           alert('Something went wrong. Please verify the deposit address.');
         } else {
           console.log('Exchange created successfully:', result);
@@ -370,10 +370,10 @@ const SwapForm = () => {
 
 
       <div className="footer">
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+        <a href="https://x.com/tonmixbot" target="_blank" rel="noopener noreferrer">
           <img src={twitterIcon} alt="Twitter" className="footer-icon" />
         </a>
-        <a href="https://t.me/" target="_blank" rel="noopener noreferrer">
+        <a href="https://t.me/tonmixerchat" target="_blank" rel="noopener noreferrer">
           <img src={telegramIcon} alt="Telegram" className="footer-icon" />
         </a>
       </div>
