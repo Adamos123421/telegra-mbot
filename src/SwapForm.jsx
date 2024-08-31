@@ -61,7 +61,7 @@ const SwapForm = () => {
       tgWebApp.ready();
 
       // Access user data
-      alert(`tg app`);
+      
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
         setUserId(user.id);
@@ -69,7 +69,7 @@ const SwapForm = () => {
         console.log('User ID:', user.id);
       } else {
         alert('No user data found. Ensure you are within Telegram.');
-        alert(`User ID: ${user.id}`);
+        alert(`User ID`);
       }
     } else {
       alert('Telegram Web App API is not available.');
