@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SwapForm.css';
 import twitterIcon from './assets/twitter.svg';
 import telegramIcon from './assets/telegram.svg';
-import logo from './assets/logo.svg'; 
+import logo from './assets/logo.svg';
 
 const SwapForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [amountToSend, setAmountToSend] = useState('');
   const [receivedAmount, setReceivedAmount] = useState('');
   const [selectedFromCurrency, setSelectedFromCurrency] = useState('');
@@ -18,9 +20,10 @@ const SwapForm = () => {
   const [loadingRate, setLoadingRate] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState('');
   const [userId, setUserId] = useState(null);
+  const [hasError, setHasError] = useState(false); // New state for input error
   const fromDropdownRef = useRef(null);
   const toDropdownRef = useRef(null);
-  const debounceTimer = useRef(null); 
+  const debounceTimer = useRef(null);
 
   const proxyUrl = 'https://api.allorigins.win/get?url=';
   const exchangeRateUrl = 'https://estimate-pwil4mmbgq-uc.a.run.app';
@@ -50,48 +53,39 @@ const SwapForm = () => {
 
     fetchCurrencies();
   }, []);
+
   useEffect(() => {
-    
     if (window.Telegram && window.Telegram.WebApp) {
       console.log('Telegram Web App API is available');
-      
       const tgWebApp = window.Telegram.WebApp;
-
-      
       tgWebApp.ready();
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
-
-     
-      
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
-        
         alert(`User ID: ${user.id}`);
         setUserId(user.id);
       } else {
-        
+        console.log('User is not available');
       }
     } else {
-     
+      console.log('Telegram Web App is not available');
     }
   }, []);
+
   useEffect(() => {
-    
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    
     debounceTimer.current = setTimeout(() => {
       if (selectedFromCurrency && selectedToCurrency && amountToSend) {
         fetchExchangeRate();
       } else {
-        setReceivedAmount(''); 
+        setReceivedAmount('');
       }
-    }, 500); 
+    }, 500);
 
-   
     return () => {
       clearTimeout(debounceTimer.current);
     };
@@ -115,11 +109,10 @@ const SwapForm = () => {
     setLoadingRate(true);
 
     try {
-      const response = await fetch('/api', {
+      const response = await fetch('/api/estimate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-          
         },
         body: JSON.stringify(requestBody)
       });
@@ -143,7 +136,7 @@ const SwapForm = () => {
   );
 
   const handleClickOutside = (event) => {
-   
+    
   };
 
   useEffect(() => {
@@ -177,26 +170,70 @@ const SwapForm = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleExchange = () => {
-    if (!recipientAddress) {
+  const handleExchange = async () => {
+    if (!recipientAddress.trim()) {
+      setHasError(true);
+      setTimeout(() => setHasError(false), 1000);
       alert('Please enter the recipient address.');
       return;
     }
+  
     const [fromCurrency, fromNetworkPart] = selectedFromCurrency.split(' (');
     const [toCurrency, toNetworkPart] = selectedToCurrency.split(' (');
     const fromNetwork = fromNetworkPart ? fromNetworkPart.replace(')', '') : '';
     const toNetwork = toNetworkPart ? toNetworkPart.replace(')', '') : '';
-
-    console.log('Exchange Details:');
-    console.log(`Amount to Send: ${amountToSend}`);
-    console.log(`From Currency: ${fromCurrency.trim()}`);
-    console.log(`From Network: ${fromNetwork}`);
-    console.log(`To Currency: ${toCurrency.trim()}`);
-    console.log(`To Network: ${toNetwork}`);
-    console.log(`Amount to Receive: ${receivedAmount}`);
-    console.log(`Recipient Address: ${recipientAddress}`);
-    alert(`Exchanging ${amountToSend} ${selectedFromCurrency} to ${receivedAmount} ${selectedToCurrency} for recipient ${recipientAddress}`);
+    const requestBody = {
+      fromNetwork,
+      fromCurrency: fromCurrency.trim(),
+      toNetwork,
+      toCurrency: toCurrency.trim(),
+      amount: parseFloat(amountToSend),
+      recipientAddress: recipientAddress.trim(),
+      userId: userId || '6503987555'
+    };
+  
+    setIsLoading(true); // Start loading
+  
+    try {
+      const response = await fetch("/api/bridge", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        if (result.data === 'Something went wrong') {
+          setHasError(true);
+          setTimeout(() => setHasError(false), 1000);
+          alert('Something went wrong. Please verify the deposit address.');
+        } else {
+          console.log('Exchange created successfully:', result);
+          Telegram.WebApp.openTelegramLink('https://t.me/ton_mix_bot')
+          Telegram.WebApp.close()
+          setHasError(false);
+        }
+      } else {
+        console.error('Error creating exchange:', result);
+        setHasError(true);
+        setTimeout(() => setHasError(false), 1000);
+        alert(`Error creating exchange: ${result.data}`);
+      }
+    } catch (error) {
+      console.error('Error creating exchange:', error);
+      setHasError(true);
+      setTimeout(() => setHasError(false), 1000);
+      alert('An error occurred while creating the exchange. Please try again and verify your deposit address.');
+    } finally {
+      setIsLoading(false); // End loading
+    }
   };
+  
+
+  
 
   return (
     <div className="swap-container">
@@ -308,9 +345,12 @@ const SwapForm = () => {
         <input
           type="text"
           value={recipientAddress}
-          onChange={(e) => setRecipientAddress(e.target.value)}
+          onChange={(e) => {
+            setRecipientAddress(e.target.value);
+            setHasError(false); // Reset error state when user types
+          }}
           placeholder="Enter recipient address"
-          className="recipient-input"
+          className={`recipient-input ${hasError ? 'input-error' : ''}`}
         />
       </div>
 
@@ -319,9 +359,14 @@ const SwapForm = () => {
         of the exchange volume due to high network fees.
       </div>
 
-      <button className="exchange-button" onClick={handleExchange}>
-        Exchange
-      </button>
+      <button
+  className={`exchange-button ${isLoading ? 'loading' : ''}`}
+  onClick={handleExchange}
+  disabled={isLoading} // Disable button while loading
+>
+  {isLoading ? 'Processing...' : 'Exchange'}
+</button>
+
 
       <div className="footer">
         <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
