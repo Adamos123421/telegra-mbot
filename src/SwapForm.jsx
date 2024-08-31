@@ -65,7 +65,7 @@ const SwapForm = () => {
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
         
-        alert(`User ID: ${user}`);
+        alert(`User ID: ${user.id}`);
         
       } else {
         alert('No user data found. Ensure you are within Telegram.');
