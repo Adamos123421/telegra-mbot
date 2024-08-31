@@ -17,10 +17,10 @@ const SwapForm = () => {
   const [loading, setLoading] = useState(true);
   const [loadingRate, setLoadingRate] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState('');
-  
+  const [userId, setUserId] = useState(null);
   const fromDropdownRef = useRef(null);
   const toDropdownRef = useRef(null);
-  const debounceTimer = useRef(null); // Ref to store the debounce timer
+  const debounceTimer = useRef(null); 
 
   const proxyUrl = 'https://api.allorigins.win/get?url=';
   const exchangeRateUrl = 'https://estimate-pwil4mmbgq-uc.a.run.app';
@@ -51,22 +51,22 @@ const SwapForm = () => {
     fetchCurrencies();
   }, []);
   useEffect(() => {
-    // Check if Telegram Web App API is available
+    
     if (window.Telegram && window.Telegram.WebApp) {
       console.log('Telegram Web App API is available');
       
       const tgWebApp = window.Telegram.WebApp;
 
-      // Initialize Telegram Web App
+      
       tgWebApp.ready();
 
-      // Access user data
+     
       
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
         
         alert(`User ID: ${user.id}`);
-        
+        setUserId(user.id);
       } else {
         alert('No user data found. Ensure you are within Telegram.');
         alert(`User ID`);
@@ -76,21 +76,21 @@ const SwapForm = () => {
     }
   }, []);
   useEffect(() => {
-    // Clear the previous timer if the user keeps typing
+    
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    // Set a new timer to wait 500 ms before fetching the exchange rate
+    
     debounceTimer.current = setTimeout(() => {
       if (selectedFromCurrency && selectedToCurrency && amountToSend) {
         fetchExchangeRate();
       } else {
-        setReceivedAmount(''); // Reset received amount if amountToSend is empty
+        setReceivedAmount(''); 
       }
-    }, 500); // 500 ms delay
+    }, 500); 
 
-    // Cleanup function to clear the timer when the component unmounts or dependencies change
+   
     return () => {
       clearTimeout(debounceTimer.current);
     };
@@ -142,7 +142,7 @@ const SwapForm = () => {
   );
 
   const handleClickOutside = (event) => {
-    // Function to handle click outside of dropdowns
+   
   };
 
   useEffect(() => {
