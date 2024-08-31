@@ -68,11 +68,10 @@ const SwapForm = () => {
         alert(`User ID: ${user.id}`);
         setUserId(user.id);
       } else {
-        alert('No user data found. Ensure you are within Telegram.');
-        alert(`User ID`);
+        
       }
     } else {
-      alert('Telegram Web App API is not available.');
+     
     }
   }, []);
   useEffect(() => {
