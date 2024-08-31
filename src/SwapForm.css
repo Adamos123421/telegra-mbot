@@ -1,0 +1,279 @@
+/* src/SwapForm.css */
+
+/* Swap Container Styles */
+.swap-container {
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #d4d4d4;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #f4f9f4; /* Light green background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center items horizontally */
+  margin-bottom: 20px; /* Space below the header */
+}
+
+.logo {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Maintain aspect ratio */
+  margin-right: 10px; /* Space between logo and text */
+}
+
+.header h2 {
+  font-size: 24px; /* Adjust font size as needed */
+  color: #2f4f2f; /* Darker green text color */
+  margin: 0; /* Remove default margin */
+}
+/* Input Group Styles */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2f4f2f; /* Darker green text */
+  font-size: 14px;
+}
+
+/* Currency Select Group Styles */
+.currency-select-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d4d4d4;
+  border-radius: 30px;
+  overflow: hidden;
+  background-color: white;
+  padding: 5px;
+}
+
+/* Currency Input Styles */
+.currency-input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  flex: 3;
+  outline: none;
+  border-radius: 30px; 
+}
+
+/* Dropdown Header Styles */
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #d4d4d4;
+  border-radius: 30px;
+  background-color: #e8f5e8; /* Light green background */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-header:hover {
+  background-color: #d9f2d9; /* Slightly darker green on hover */
+}
+
+/* Dropdown Menu Animation and Styles */
+.dropdown-menu {
+  position: absolute;
+  width: calc(100% - 2px); /* Adjust width to fit within the parent */
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #e8f5e8, #d4e8d4); /* Green gradient background */
+  z-index: 1000;
+  display: none; /* Hide by default */
+  transform-origin: top center;
+  animation: dropdown-open 0.3s ease forwards;
+}
+
+.dropdown-menu.show {
+  display: block; /* Show dropdown when 'show' class is added */
+}
+
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #cfe8cf; /* Light green on hover */
+}
+
+.search-input {
+  width: calc(100% - 16px); /* Adjust width for padding */
+  padding: 8px;
+  margin-bottom: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Loading Text Styles */
+.loading-text {
+  font-style: italic;
+  color: #888;
+}
+
+/* Animation Keyframes */
+@keyframes dropdown-open {
+  0% {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Exchange Button Styles */
+.exchange-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #28a745; /* Green button */
+  color: #ffffff;
+  border: none;
+  border-radius: 30px; /* Rounded button */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.exchange-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+  .swap-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .currency-select-group {
+    flex-direction: column;
+    align-items: stretch; /* Align elements to take full width */
+  }
+
+  .currency-input,
+  .currency-select {
+    width: 100%; /* Full width for input and select on mobile */
+    margin-bottom: 10px;
+    font-size: 14px; /* Smaller font size for better readability on mobile */
+  }
+
+  .exchange-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .input-group label {
+    font-size: 13px;
+  }
+
+  .info-text,
+  .warning-text {
+    font-size: 11px;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 10px;
+    border-radius: 50%;
+    background-color: #f0f0f0; /* Light grey background for icons */
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .social-links a:hover {
+    background-color: #28a745; /* Green background on hover */
+  }
+  
+  .social-links img {
+    width: 20px; /* Icon size */
+    height: 20px;
+  }
+  
+  .social-links i {
+    font-size: 20px;
+    color: #2f4f2f; /* Dark green for icon */
+  }
+  
+  .footer-text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #2f4f2f; /* Dark green text */
+    padding-bottom: 10px;
+  }
+  /* Recipient Address Styles */
+.recipient-input {
+  width: calc(100% - 16px); /* Adjust width to fit within container padding */
+  padding: 12px; /* Add more padding for better usability */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 20px; /* Rounded corners to match the form's design */
+  font-size: 16px; /* Increase font size for better readability */
+  margin-top: 10px; /* Space between other elements */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for better focus */
+  outline: none; /* Remove default outline */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+}
+
+.recipient-input:focus {
+  border-color: #28a745; /* Green border when focused */
+  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5); /* Green shadow when focused */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .recipient-input {
+    font-size: 14px; /* Adjust font size for smaller screens */
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+}
+/* SwapForm.css */
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust spacing between icons */
+  padding: 20px;
+  background: #f0f0f0; /* Light background for footer */
+  border-top: 1px solid #e0e0e0; /* Subtle border for separation */
+}
+
+.footer-icon {
+  width: 24px; /* Adjust size of icons */
+  height: 24px; /* Ensure height matches width */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.footer-icon:hover {
+  transform: scale(1.1); /* Slightly enlarge icons on hover */
+  opacity: 0.8; /* Slightly fade icons on hover */
+}
+
+
+}
