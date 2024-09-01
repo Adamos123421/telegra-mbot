@@ -7,6 +7,7 @@ import swapIcon from './assets/swap-icon.svg';
 
 const SwapForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [amountToSend, setAmountToSend] = useState('');
   const [receivedAmount, setReceivedAmount] = useState('');
   const [selectedFromCurrency, setSelectedFromCurrency] = useState('');
@@ -180,7 +181,7 @@ const SwapForm = () => {
     if (!recipientAddress.trim()) {
       setHasError(true);
       setTimeout(() => setHasError(false), 1000);
-      alert('Please enter the recipient address.');
+      setErrorMessage('Please enter the recipient address.');
       return;
     }
   
@@ -199,6 +200,7 @@ const SwapForm = () => {
     };
   
     setIsLoading(true);
+    setErrorMessage(''); 
   
     try {
       const response = await fetch("/api/bridge", {
@@ -215,29 +217,31 @@ const SwapForm = () => {
         if (result.data === 'Something went wrong') {
           setHasError(true);
           setTimeout(() => setHasError(false), 1000);
-          
-          alert('Something went wrong. Please verify the deposit address.');
+          setErrorMessage('Exchange failed. Please check the deposit wallet.');
         } else {
           console.log('Exchange created successfully:', result);
           Telegram.WebApp.openTelegramLink('https://t.me/ton_mix_bot');
           Telegram.WebApp.close();
           setHasError(false);
+          setErrorMessage(''); // Clear error message on success
         }
       } else {
         console.error('Error creating exchange:', result);
         setHasError(true);
         setTimeout(() => setHasError(false), 1000);
-        alert(`Error creating exchange: ${result.data}`);
+        
+        setErrorMessage(`Error creating exchange: ${result.data}`);
       }
     } catch (error) {
       console.error('Error creating exchange:', error);
       setHasError(true);
       setTimeout(() => setHasError(false), 1000);
-      alert('An error occurred while creating the exchange. Please try again and verify your deposit address.');
+      setErrorMessage('An error occurred while creating the exchange. Please try again and verify your deposit address.');
     } finally {
       setIsLoading(false); 
     }
   };
+  
 
   const handleMixerModeToggle = () => {
     setMixerMode((prevMode) => !prevMode);
@@ -358,19 +362,20 @@ const SwapForm = () => {
 </div>
 
 
-      <div className="input-group">
-        <label>Recipient Address</label>
-        <input
-          type="text"
-          value={recipientAddress}
-          onChange={(e) => {
-            setRecipientAddress(e.target.value);
-            setHasError(false); 
-          }}
-          placeholder="Enter recipient address"
-          className={`recipient-input ${hasError ? 'input-error' : ''}`}
-        />
-      </div>
+<div className="input-group">
+  <label>Recipient Address</label>
+  <input
+    type="text"
+    value={recipientAddress}
+    onChange={(e) => {
+      setRecipientAddress(e.target.value);
+      setHasError(false); // Reset error state when user types
+    }}
+    placeholder="Enter recipient address"
+    className={`recipient-input ${hasError ? 'input-error' : ''}`}
+  />
+  {errorMessage && <div className="error-message">{errorMessage}</div>}
+</div>
 
       <div className="warning-text">
         When exchanging a small sum, transaction fees can take a large portion
@@ -378,12 +383,13 @@ const SwapForm = () => {
       </div>
 
       <button
-        className={`exchange-button ${isLoading ? 'loading' : ''}`}
-        onClick={handleExchange}
-        disabled={isLoading}
-      >
-        {isLoading ? 'Processing...' : 'Exchange'}
-      </button>
+  className={`exchange-button ${isLoading ? 'loading' : ''}`}
+  onClick={handleExchange}
+  disabled={isLoading} // Disable button while loading
+>
+  {isLoading ? 'Processing...' : selectedFromCurrency === selectedToCurrency ? 'Mixer' : 'Bridge'}
+</button>
+
 
       <div className="footer">
         <a href="https://x.com/tonmixbot" target="_blank" rel="noopener noreferrer">
