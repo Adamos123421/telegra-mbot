@@ -60,10 +60,8 @@ const SwapForm = () => {
       console.log('Telegram Web App API is available');
       const tgWebApp = window.Telegram.WebApp;
       tgWebApp.ready();
-      
-    tgWebApp.disableVerticalSwipes();
-    tgWebApp.expand();
-    tgWebApp.disableScroll();
+      window.Telegram.WebApp.expand();
+      window.Telegram.WebApp.disableVerticalSwipes();
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
         setUserId(user.id);
