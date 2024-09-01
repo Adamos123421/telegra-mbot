@@ -19,7 +19,8 @@ const SwapForm = () => {
   const [loadingRate, setLoadingRate] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState('');
   const [userId, setUserId] = useState(null);
-  const [hasError, setHasError] = useState(false);
+  const [hasError, setHasError] = useState(false); // New state for input error
+  const [mixerMode, setMixerMode] = useState(false); // New state for Mixer Mode
   const fromDropdownRef = useRef(null);
   const toDropdownRef = useRef(null);
   const debounceTimer = useRef(null);
@@ -143,7 +144,7 @@ const SwapForm = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  
   const handleFromDropdownToggle = () => {
     setIsFromDropdownOpen(prev => !prev);
     setIsToDropdownOpen(false);
@@ -158,11 +159,18 @@ const SwapForm = () => {
     if (isFrom) {
       setSelectedFromCurrency(currency);
       setIsFromDropdownOpen(false);
+      if (mixerMode) {
+        setSelectedToCurrency(currency); // Synchronize To currency with From currency when Mixer Mode is enabled
+      }
     } else {
       setSelectedToCurrency(currency);
       setIsToDropdownOpen(false);
+      if (mixerMode) {
+        setSelectedFromCurrency(currency); // Synchronize From currency with To currency when Mixer Mode is enabled
+      }
     }
   };
+  
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -231,11 +239,25 @@ const SwapForm = () => {
     }
   };
 
+  const handleMixerModeToggle = () => {
+    setMixerMode((prevMode) => !prevMode);
+    if (!mixerMode) {
+      // When enabling Mixer Mode, synchronize both currencies
+      setSelectedToCurrency(selectedFromCurrency);
+    }
+  };
+
   return (
     <div className="swap-container">
       <div className="header">
         <img src={logo} alt="Logo" className="logo" />
         <h2>Mixer Bridge</h2>
+      </div>
+      <div className="switch-container">
+        <label>Mixer Mode</label>
+        <div className={`switch ${mixerMode ? 'on' : 'off'}`} onClick={handleMixerModeToggle}>
+          <div className="switch-toggle"></div>
+        </div>
       </div>
 
       <div className="input-group">
@@ -281,15 +303,15 @@ const SwapForm = () => {
           )}
         </div>
       </div>
-
       <div className="swap-icon" onClick={() => {
        
-        const temp = selectedFromCurrency;
-        setSelectedFromCurrency(selectedToCurrency);
-        setSelectedToCurrency(temp);
-      }}>
-        <img src={swapIcon} alt="Swap" className="swap-icon-img" />
-      </div>
+       const temp = selectedFromCurrency;
+       setSelectedFromCurrency(selectedToCurrency);
+       setSelectedToCurrency(temp);
+     }}>
+       <img src={swapIcon} alt="Swap" className="swap-icon-img" />
+     </div>    
+     
 
       <div className="input-group">
         <label>You get</label>
@@ -342,7 +364,7 @@ const SwapForm = () => {
           value={recipientAddress}
           onChange={(e) => {
             setRecipientAddress(e.target.value);
-            setHasError(false); 
+            setHasError(false); // Reset error state when user types
           }}
           placeholder="Enter recipient address"
           className={`recipient-input ${hasError ? 'input-error' : ''}`}
@@ -357,7 +379,7 @@ const SwapForm = () => {
       <button
         className={`exchange-button ${isLoading ? 'loading' : ''}`}
         onClick={handleExchange}
-        disabled={isLoading} 
+        disabled={isLoading} // Disable button while loading
       >
         {isLoading ? 'Processing...' : 'Exchange'}
       </button>
