@@ -291,6 +291,7 @@ const SwapForm = () => {
             onChange={(e) => setAmountToSend(e.target.value)}
             placeholder="Enter amount"
             className="currency-input"
+            inputmode="decimal"
           />
           <div
             className="dropdown-header"
