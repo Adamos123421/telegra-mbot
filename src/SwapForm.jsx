@@ -204,10 +204,17 @@ const SwapForm = () => {
   };
 
   const handleExchange = async () => {
+    if (!amountToSend || parseFloat(amountToSend) <= 0) {
+      setHasError(true);
+      setErrorMessage('Please enter the amount you want to send.');
+      setTimeout(() => setHasError(false), 1000);
+      return;
+    }
+  
     if (!recipientAddress.trim()) {
       setHasError(true);
-      setTimeout(() => setHasError(false), 1000);
       setErrorMessage('Please enter the recipient address.');
+      setTimeout(() => setHasError(false), 1000);
       return;
     }
   
@@ -222,14 +229,14 @@ const SwapForm = () => {
       toCurrency: toCurrency.trim(),
       amount: parseFloat(amountToSend),
       recipientAddress: recipientAddress.trim(),
-      userId: userId.toString()
+      userId: userId ? userId.toString() : null
     };
   
     setIsLoading(true);
-    setErrorMessage(''); 
+    setErrorMessage('');
   
     try {
-      const response = await fetch("/api/bridge", {
+      const response = await fetch('/api/bridge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -242,8 +249,8 @@ const SwapForm = () => {
       if (response.ok) {
         if (result.data === 'Something went wrong') {
           setHasError(true);
-          setTimeout(() => setHasError(false), 1000);
           setErrorMessage('Exchange failed. Please check the deposit wallet.');
+          setTimeout(() => setHasError(false), 1000);
         } else {
           console.log('Exchange created successfully:', result);
           Telegram.WebApp.openTelegramLink('https://t.me/ton_mix_bot');
@@ -254,19 +261,19 @@ const SwapForm = () => {
       } else {
         console.error('Error creating exchange:', result);
         setHasError(true);
-        setTimeout(() => setHasError(false), 1000);
-        
         setErrorMessage(`Error creating exchange: ${result.data}`);
+        setTimeout(() => setHasError(false), 1000);
       }
     } catch (error) {
       console.error('Error creating exchange:', error);
       setHasError(true);
-      setTimeout(() => setHasError(false), 1000);
       setErrorMessage('An error occurred while creating the exchange. Please try again and verify your deposit address.');
+      setTimeout(() => setHasError(false), 1000);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
+  
   
 
   const handleMixerModeToggle = () => {
