@@ -160,7 +160,7 @@ input, textarea {
 
 @media (max-width: 768px) {
   .swap-container {
-    margin-bottom: 100px;
+    margin-bottom: 150px;
   }
 
   .currency-select-group {
