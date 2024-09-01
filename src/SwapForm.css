@@ -25,7 +25,7 @@
 }
 
 .header h2 {
-  font-size: 24px;
+  font-size: 1.5rem; /* Relative font size for better scalability */
   color: #2f4f2f;
   margin: 0;
 }
@@ -33,14 +33,19 @@
 .input-group {
   margin-bottom: 15px;
   text-align: left;
+  margin-top: 20px;
 }
-
+.input-groups {
+  margin-bottom: 15px;
+  text-align: left;
+  margin-bottom: 50px;
+}
 .input-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
   color: #2f4f2f;
-  font-size: 14px;
+  font-size: 0.875rem; /* Relative font size */
 }
 
 .currency-select-group {
@@ -56,11 +61,12 @@
 
 .currency-input {
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem; /* Relative font size */
   border: none;
   flex: 3;
   outline: none;
   border-radius: 30px;
+  
 }
 
 .dropdown-header {
@@ -138,10 +144,10 @@
   color: #ffffff;
   border: none;
   border-radius: 30px;
-  font-size: 16px;
+  font-size: 1rem; /* Relative font size */
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin-top: 100px;
 }
 
 .exchange-button:hover {
@@ -150,7 +156,6 @@
 
 @media (max-width: 768px) {
   .swap-container {
-    max-width: 100%;
     padding: 10px;
   }
 
@@ -163,21 +168,21 @@
   .currency-select {
     width: 100%;
     margin-bottom: 10px;
-    font-size: 14px;
+    font-size: 0.875rem; /* Relative font size */
   }
 
   .exchange-button {
     padding: 12px;
-    font-size: 14px;
+    font-size: 0.875rem; /* Relative font size */
   }
 
   .input-group label {
-    font-size: 13px;
+    font-size: 0.75rem; /* Relative font size */
   }
 
   .info-text,
   .warning-text {
-    font-size: 11px;
+    font-size: 0.6875rem; /* Relative font size */
   }
 
   .social-links {
@@ -185,7 +190,7 @@
     justify-content: center;
     margin-top: 20px;
   }
-  
+
   .social-links a {
     display: flex;
     align-items: center;
@@ -198,25 +203,25 @@
     transition: background-color 0.3s ease;
     text-decoration: none;
   }
-  
+
   .social-links a:hover {
     background-color: #28a745;
   }
-  
+
   .social-links img {
     width: 20px;
     height: 20px;
   }
-  
+
   .social-links i {
-    font-size: 20px;
+    font-size: 1.25rem; /* Relative font size */
     color: #2f4f2f;
   }
-  
+
   .footer-text {
     margin-top: 20px;
     text-align: center;
-    font-size: 12px;
+    font-size: 0.75rem; /* Relative font size */
     color: #2f4f2f;
     padding-bottom: 10px;
   }
@@ -227,8 +232,8 @@
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  font-size: 16px;
-  margin-top: 10px;
+  font-size: 1rem; /* Relative font size */
+  margin-top: 20px; /* Adjust the value as needed */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -257,8 +262,8 @@
 .footer-icon:hover {
   transform: scale(1.1);
   opacity: 0.8;
-  
 }
+
 .exchange-button.loading {
   background-color: #cccccc;
   cursor: not-allowed;
@@ -278,6 +283,7 @@
   animation: spin 1s linear infinite;
   transform: translate(-50%, -50%);
 }
+
 .swap-icon {
   display: flex;
   justify-content: center;
@@ -290,6 +296,7 @@
   height: 24px;
   cursor: pointer;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -299,7 +306,6 @@
   }
 }
 
-
 .switch-container {
   display: flex;
   align-items: center;
@@ -307,7 +313,7 @@
 }
 
 .switch-container label {
-  margin-left: auto; /* Pushes the label to the right */
+  margin-left: auto;
   margin-right: 10px;
   font-weight: bold;
 }
@@ -352,12 +358,6 @@
   margin-top: 5px;
   font-size: 0.9em;
 }
-.swap-container {
-  position: relative;
-}
-
-.exchange-button {
-  position: sticky;
-  bottom: 0;
-  background-color: #4caf50; /* Example background color */
+.input-group .third-input {
+  margin-top: 2000px; /* Adjust the value as needed */
 }
