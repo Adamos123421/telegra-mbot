@@ -1,5 +1,9 @@
-/* src/SwapForm.css */
 
+html, body {
+  touch-action: pan-x pan-y; 
+  overflow-x: hidden;
+  overflow-y: auto; 
+}
 .swap-container {
   max-width: 90%;
   margin: 20px auto;

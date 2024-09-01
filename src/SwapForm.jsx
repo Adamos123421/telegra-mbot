@@ -79,6 +79,14 @@ const SwapForm = () => {
       tgWebApp.ready();
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.disableVerticalSwipes();
+      document.addEventListener('gesturestart', (e) => {
+        e.preventDefault();
+      });
+      document.addEventListener('gesturechange', (e) => {
+        e.preventDefault();
+      });
+      document.addEventListener('gestureend', (e) => {
+        e.preventDefault();})
       const user = tgWebApp.initDataUnsafe.user;
       if (user) {
         setUserId(user.id);
