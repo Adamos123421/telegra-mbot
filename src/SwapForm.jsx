@@ -39,8 +39,8 @@ const SwapForm = () => {
         if (result.status === 200) {
           setTickers(result.data);
           if (result.data.length > 0) {
-            setSelectedFromCurrency(`${result.data[0].ticker} (${result.data[0].network})`);
-            setSelectedToCurrency(`${result.data[1].ticker} (${result.data[1].network})`);
+            setSelectedFromCurrency(`${result.data[0].ticker.toUpperCase()} (${result.data[0].network.toUpperCase()})`);
+            setSelectedToCurrency(`${result.data[1].ticker.toUpperCase()} (${result.data[1].network.toUpperCase()})`);
           }
         } else {
           console.error('Error fetching data:', result.status);
@@ -331,9 +331,9 @@ const SwapForm = () => {
                   <div
                     key={`${ticker.ticker}-${ticker.network}-${index}`}
                     className="dropdown-item"
-                    onClick={() => handleDropdownItemClick(`${ticker.ticker} (${ticker.network})`, true)}
+                    onClick={() => handleDropdownItemClick(`${ticker.ticker.toUpperCase()} (${ticker.network.toUpperCase()})`, true)}
                   >
-                    {ticker.ticker} ({ticker.network})
+                    {ticker.ticker.toUpperCase()} ({ticker.network.toUpperCase()})
                   </div>
                 ))
               )}
@@ -384,9 +384,9 @@ const SwapForm = () => {
             <div
               key={`${ticker.ticker}-${ticker.network}-${index}`}
               className="dropdown-item"
-              onClick={() => handleDropdownItemClick(`${ticker.ticker} (${ticker.network})`, false)}
+              onClick={() => handleDropdownItemClick(`${ticker.ticker.toUpperCase()} (${ticker.network.toUpperCase()})`, false)}
             >
-              {ticker.ticker} ({ticker.network})
+              {ticker.ticker.toUpperCase()} ({ticker.network.toUpperCase()})
             </div>
           ))
         )}
