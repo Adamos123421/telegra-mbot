@@ -4,6 +4,9 @@ html, body {
   overflow-x: hidden;
   overflow-y: auto; 
 }
+input, textarea {
+  font-size: 16px;
+}
 .swap-container {
   max-width: 90%;
   margin: 20px auto;
@@ -166,7 +169,7 @@ html, body {
   .currency-select {
     width: 100%;
     margin-bottom: 10px;
-    font-size: 0.875rem; /* Relative font size */
+    font-size: 1rem; 
   }
 
   .exchange-button {
@@ -175,7 +178,7 @@ html, body {
   }
 
   .input-group label {
-    font-size: 0.75rem; /* Relative font size */
+    font-size: 1rem; /* Relative font size */
   }
 
   .info-text,
