@@ -19,8 +19,8 @@ const SwapForm = () => {
   const [loadingRate, setLoadingRate] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState('');
   const [userId, setUserId] = useState(null);
-  const [hasError, setHasError] = useState(false); // New state for input error
-  const [mixerMode, setMixerMode] = useState(false); // New state for Mixer Mode
+  const [hasError, setHasError] = useState(false); 
+  const [mixerMode, setMixerMode] = useState(false); 
   const fromDropdownRef = useRef(null);
   const toDropdownRef = useRef(null);
   const debounceTimer = useRef(null);
@@ -160,17 +160,17 @@ const SwapForm = () => {
       setSelectedFromCurrency(currency);
       setIsFromDropdownOpen(false);
       if (mixerMode) {
-        setSelectedToCurrency(currency); // Synchronize To currency with From currency when Mixer Mode is enabled
+        setSelectedToCurrency(currency);
       }
     } else {
       setSelectedToCurrency(currency);
       setIsToDropdownOpen(false);
       if (mixerMode) {
-        setSelectedFromCurrency(currency); // Synchronize From currency with To currency when Mixer Mode is enabled
+        setSelectedFromCurrency(currency); 
       }
     }
   };
-  
+
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -242,7 +242,7 @@ const SwapForm = () => {
   const handleMixerModeToggle = () => {
     setMixerMode((prevMode) => !prevMode);
     if (!mixerMode) {
-      // When enabling Mixer Mode, synchronize both currencies
+      
       setSelectedToCurrency(selectedFromCurrency);
     }
   };
@@ -313,49 +313,50 @@ const SwapForm = () => {
      </div>    
      
 
-      <div className="input-group">
-        <label>You get</label>
-        <div className="currency-select-group">
-          <input
-            type="number"
-            value={loadingRate ? '...' : receivedAmount}
-            readOnly
-            placeholder={loadingRate ? 'Calculating...' : receivedAmount === '' ? 'Amount will be calculated' : ''}
-            className="currency-input"
-          />
-          <div
-            className="dropdown-header"
-            onClick={handleToDropdownToggle}
-            ref={toDropdownRef}
-          >
-            {loading ? 'Loading...' : selectedToCurrency || 'Select currency'}
-          </div>
-          {isToDropdownOpen && (
-            <div className="dropdown-menu show" onClick={(e) => e.stopPropagation()}>
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                placeholder="Search..."
-                className="search-input"
-              />
-              {loading ? (
-                <div className="loading-text">Loading...</div>
-              ) : (
-                filteredTickers.map((ticker, index) => (
-                  <div
-                    key={`${ticker.ticker}-${ticker.network}-${index}`}
-                    className="dropdown-item"
-                    onClick={() => handleDropdownItemClick(`${ticker.ticker} (${ticker.network})`, false)}
-                  >
-                    {ticker.ticker} ({ticker.network})
-                  </div>
-                ))
-              )}
+     <div className="input-group">
+  <label>You get</label>
+  <div className="currency-select-group">
+    <input
+      type="number"
+      value={loadingRate ? '...' : receivedAmount}
+      readOnly
+      placeholder={loadingRate ? 'Calculating...' : receivedAmount === '' ? 'Amount will be calculated' : ''}
+      className="currency-input"
+    />
+    <div
+      className={`dropdown-header ${mixerMode ? 'disabled' : ''}`}
+      onClick={handleToDropdownToggle}
+      ref={toDropdownRef}
+    >
+      {loading ? 'Loading...' : selectedToCurrency || 'Select currency'}
+    </div>
+    {isToDropdownOpen && !mixerMode && (
+      <div className="dropdown-menu show" onClick={(e) => e.stopPropagation()}>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search..."
+          className="search-input"
+        />
+        {loading ? (
+          <div className="loading-text">Loading...</div>
+        ) : (
+          filteredTickers.map((ticker, index) => (
+            <div
+              key={`${ticker.ticker}-${ticker.network}-${index}`}
+              className="dropdown-item"
+              onClick={() => handleDropdownItemClick(`${ticker.ticker} (${ticker.network})`, false)}
+            >
+              {ticker.ticker} ({ticker.network})
             </div>
-          )}
-        </div>
+          ))
+        )}
       </div>
+    )}
+  </div>
+</div>
+
 
       <div className="input-group">
         <label>Recipient Address</label>
@@ -364,7 +365,7 @@ const SwapForm = () => {
           value={recipientAddress}
           onChange={(e) => {
             setRecipientAddress(e.target.value);
-            setHasError(false); // Reset error state when user types
+            setHasError(false); 
           }}
           placeholder="Enter recipient address"
           className={`recipient-input ${hasError ? 'input-error' : ''}`}
@@ -379,7 +380,7 @@ const SwapForm = () => {
       <button
         className={`exchange-button ${isLoading ? 'loading' : ''}`}
         onClick={handleExchange}
-        disabled={isLoading} // Disable button while loading
+        disabled={isLoading}
       >
         {isLoading ? 'Processing...' : 'Exchange'}
       </button>

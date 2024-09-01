@@ -340,3 +340,9 @@
 .switch.on .switch-toggle {
   transform: translateX(30px);
 }
+
+.dropdown-header.disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed; 
+}
