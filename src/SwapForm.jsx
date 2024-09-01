@@ -398,7 +398,7 @@ const SwapForm = () => {
 
       <div className="warning-text">
         When exchanging a small sum, transaction fees can take a large portion
-        of the exchange volume due to high network fees.
+        of the exchange volume due to network fees.
       </div>
 
       <button
