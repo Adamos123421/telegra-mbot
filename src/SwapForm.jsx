@@ -249,7 +249,7 @@ const SwapForm = () => {
       if (response.ok) {
         if (result.data === 'Something went wrong') {
           setHasError(true);
-          setErrorMessage('Exchange failed. Please check the deposit wallet.');
+          setErrorMessage('Exchange failed. Please check the recipient address.');
           setTimeout(() => setHasError(false), 1000);
         } else {
           console.log('Exchange created successfully:', result);
