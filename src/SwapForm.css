@@ -4,6 +4,9 @@ html, body {
   overflow-x: hidden;
   overflow-y: auto; 
 }
+body {
+  padding-bottom: 100px; /* Adjust based on your layout */
+}
 input, textarea {
   font-size: 16px;
 }
@@ -157,7 +160,7 @@ input, textarea {
 
 @media (max-width: 768px) {
   .swap-container {
-    padding: 10px;
+    margin-bottom: 100px;
   }
 
   .currency-select-group {
