@@ -346,9 +346,18 @@
   color: #999;
   cursor: not-allowed; 
 }
-/* SwapForm.css */
+
 .error-message {
   color: red;
   margin-top: 5px;
   font-size: 0.9em;
+}
+.swap-container {
+  position: relative;
+}
+
+.exchange-button {
+  position: sticky;
+  bottom: 0;
+  background-color: #4caf50; /* Example background color */
 }

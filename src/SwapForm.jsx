@@ -155,6 +155,11 @@ const SwapForm = () => {
   const handleClickOutside = (event) => {
     
   };
+  const handleInputFocus = (event) => {
+    setTimeout(() => {
+      event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300); // Delay to allow the keyboard to appear
+  };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -382,15 +387,16 @@ const SwapForm = () => {
 <div className="input-group">
   <label>Recipient Address</label>
   <input
-    type="text"
-    value={recipientAddress}
-    onChange={(e) => {
-      setRecipientAddress(e.target.value);
-      setHasError(false); // Reset error state when user types
-    }}
-    placeholder="Enter recipient address"
-    className={`recipient-input ${hasError ? 'input-error' : ''}`}
-  />
+  type="text"
+  value={recipientAddress}
+  onFocus={handleInputFocus}
+  onChange={(e) => {
+    setRecipientAddress(e.target.value);
+    setHasError(false); // Reset error state when user types
+  }}
+  placeholder="Enter recipient address"
+  className={`recipient-input ${hasError ? 'input-error' : ''}`}
+/>
   {errorMessage && <div className="error-message">{errorMessage}</div>}
 </div>
 
