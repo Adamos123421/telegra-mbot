@@ -54,7 +54,24 @@ const SwapForm = () => {
 
     fetchCurrencies();
   }, []);
-
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerHeight < window.innerWidth) {
+        // Assuming keyboard is visible
+        document.querySelector('.swap-container').style.marginBottom = '60px'; // Adjust based on your design
+      } else {
+        // Keyboard is hidden
+        document.querySelector('.swap-container').style.marginBottom = '0';
+      }
+    };
+  
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       console.log('Telegram Web App API is available');
