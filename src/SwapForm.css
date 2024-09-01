@@ -33,13 +33,8 @@
 .input-group {
   margin-bottom: 15px;
   text-align: left;
-  margin-top: 20px;
 }
-.input-groups {
-  margin-bottom: 15px;
-  text-align: left;
-  margin-bottom: 50px;
-}
+
 .input-group label {
   display: block;
   margin-bottom: 5px;
@@ -66,7 +61,6 @@
   flex: 3;
   outline: none;
   border-radius: 30px;
-  
 }
 
 .dropdown-header {
@@ -147,7 +141,7 @@
   font-size: 1rem; /* Relative font size */
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .exchange-button:hover {
@@ -233,7 +227,7 @@
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 1rem; /* Relative font size */
-  margin-top: 20px; /* Adjust the value as needed */
+  margin-top: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -359,5 +353,5 @@
   font-size: 0.9em;
 }
 .input-group .third-input {
-  margin-top: 2000px; /* Adjust the value as needed */
+  margin-top: 20px; /* Adjust the value as needed */
 }

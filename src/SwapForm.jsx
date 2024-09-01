@@ -335,9 +335,8 @@ const SwapForm = () => {
      </div>    
      
 
-     <div className="input-groups">
+     <div className="input-group">
   <label>You get</label>
-  
   <div className="currency-select-group">
     <input
       type="number"
