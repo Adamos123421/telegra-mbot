@@ -310,6 +310,54 @@ input, textarea {
   }
 }
 
+.switch-containers {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  
+}
+
+.switch-containers label {
+  margin-left: auto;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.switchs {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: #ccc;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.switchs.on {
+  background: #3478a0;
+}
+
+.switch-toggles {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+
+.switchs.on .switch-toggles {
+  transform: translateX(30px);
+}
+.privacy-label {
+  position: absolute;
+  font-size: 0.75rem; /* Adjust size as needed */
+  color: white;
+  pointer-events: none; /* Prevents clicks from triggering the label */
+}
 .switch-container {
   display: flex;
   align-items: center;

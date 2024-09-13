@@ -8,6 +8,7 @@ import swapIcon from './assets/swap-icon.svg';
 const SwapForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const[feeAmount,setFeeAmount]=useState('');
   const [amountToSend, setAmountToSend] = useState('');
   const [receivedAmount, setReceivedAmount] = useState('');
   const [selectedFromCurrency, setSelectedFromCurrency] = useState('');
@@ -22,6 +23,7 @@ const SwapForm = () => {
   const [userId, setUserId] = useState(null);
   const [hasError, setHasError] = useState(false); 
   const [mixerMode, setMixerMode] = useState(false); 
+  const [PrivacyMode, setPrivacyMode] = useState(false); 
   const fromDropdownRef = useRef(null);
   const toDropdownRef = useRef(null);
   const debounceTimer = useRef(null);
@@ -128,8 +130,10 @@ const SwapForm = () => {
       toNetwork: trimmedToNetwork,
       amount,
       fromCurrency: fromCurrency.trim(),
-      toCurrency: toCurrency.trim()
+      toCurrency: toCurrency.trim(),
+      privacy:PrivacyMode
     };
+    console.log(PrivacyMode)
 
     setLoadingRate(true);
 
@@ -142,10 +146,14 @@ const SwapForm = () => {
         body: JSON.stringify(requestBody)
       });
 
+
       const result = await response.json();
 
       if (response.ok) {
+        setFeeAmount(result.data.fee)
         setReceivedAmount(result.data.amount);
+        console.log(result.data.fee)
+        console.log(result.data.amount)
       } else {
         console.error('Error fetching exchange rate:', result);
       }
@@ -229,7 +237,8 @@ const SwapForm = () => {
       toCurrency: toCurrency.trim(),
       amount: parseFloat(amountToSend),
       recipientAddress: recipientAddress.trim(),
-      userId: userId ? userId.toString() : null
+      userId: userId ? userId.toString() : null,
+      privacy:PrivacyMode
     };
   
     setIsLoading(true);
@@ -283,7 +292,11 @@ const SwapForm = () => {
       setSelectedToCurrency(selectedFromCurrency);
     }
   };
-
+  const handlePrivacyMode = () => {
+    setPrivacyMode((prevMode) => !prevMode);
+    fetchExchangeRate()
+    
+  };
   return (
     <div className="swap-container">
       <div className="header">
@@ -393,9 +406,22 @@ const SwapForm = () => {
       </div>
     )}
   </div>
+  <div className="switch-containers">
+  <label>{PrivacyMode ? 'Privacy Mode: FULL 🐱‍👤' : 'Privacy Mode: SEMI 💨'}</label>
+        <div className={`switchs ${PrivacyMode ? 'on' : 'off'}`} onClick={handlePrivacyMode}>
+          <div className="switch-toggles"></div>
+        </div>
+        </div>
+        <div className="fee-info" style={{ color: 'black', marginTop: '8px' }}>
+  {loadingRate 
+    ? 'Calculating fees...' 
+    : feeAmount !== undefined && `Fee: ${feeAmount} USD`
+  }
+</div>
 </div>
 
 
+    
 <div className="input-group">
   <label>Recipient Address</label>
   <input
