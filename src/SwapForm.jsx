@@ -28,14 +28,14 @@ const SwapForm = () => {
   const toDropdownRef = useRef(null);
   const debounceTimer = useRef(null);
 
- 
+  const proxyUrl = 'https://api.allorigins.win/get?url=';
+  const exchangeRateUrl = 'https://estimate-pwil4mmbgq-uc.a.run.app';
 
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        
-        const response = await fetch("/api/currencies");
-        console.log(response)
+        const targetUrl = encodeURIComponent('https://getcurrencies-pwil4mmbgq-uc.a.run.app/');
+        const response = await fetch(proxyUrl + targetUrl);
         const data = await response.json();
         const result = JSON.parse(data.contents);
         if (result.status === 200) {
