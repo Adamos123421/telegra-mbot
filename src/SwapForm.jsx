@@ -28,14 +28,14 @@ const SwapForm = () => {
   const toDropdownRef = useRef(null);
   const debounceTimer = useRef(null);
 
-  const proxyUrl = 'https://api.allorigins.win/get?url=';
-  const exchangeRateUrl = 'https://estimate-pwil4mmbgq-uc.a.run.app';
+ 
 
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        const targetUrl = encodeURIComponent('https://getcurrencies-pwil4mmbgq-uc.a.run.app/');
-        const response = await fetch(proxyUrl + targetUrl);
+        
+        const response = await fetch("/api/currencies");
+        console.log(response)
         const data = await response.json();
         const result = JSON.parse(data.contents);
         if (result.status === 200) {
@@ -256,16 +256,17 @@ const SwapForm = () => {
       const result = await response.json();
   
       if (response.ok) {
-        if (result.data === 'Something went wrong') {
+        console.log(result.data)
+        if (result.status === 500) {
           setHasError(true);
-          setErrorMessage('Exchange failed. Please check the recipient address.');
+          setErrorMessage(result.data);
           setTimeout(() => setHasError(false), 1000);
         } else {
           console.log('Exchange created successfully:', result);
           Telegram.WebApp.openTelegramLink('https://t.me/ton_mix_bot');
           Telegram.WebApp.close();
           setHasError(false);
-          setErrorMessage(''); // Clear error message on success
+          setErrorMessage(''); 
         }
       } else {
         console.error('Error creating exchange:', result);
