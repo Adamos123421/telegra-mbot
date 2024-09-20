@@ -111,15 +111,23 @@ const SwapForm = () => {
       clearTimeout(debounceTimer.current);
     };
   }, [selectedFromNetwork, selectedToNetwork, amountToSend]);
-
-  const fetchExchangeRate = async () => {
+  const handlePrivacyMode = () => {
+    setPrivacyMode(!privacyMode);
+    
+    
+  };
+  useEffect(() => {
+    fetchExchangeRate(privacyMode);
+  }, [privacyMode]); 
+  const fetchExchangeRate = async (privacyModeS) => {
+    console.log(privacyMode)
     const requestBody = {
       fromNetwork: selectedFromNetwork.network,
       toNetwork: selectedToNetwork.network,
       amount: amountToSend,
       fromCurrency: selectedFromNetwork.ticker,
       toCurrency: selectedToNetwork.ticker,
-      privacy: privacyMode,
+      privacy: privacyModeS,
     };
 
     setLoadingRate(true);
@@ -151,7 +159,7 @@ const SwapForm = () => {
   const filteredNetworks = networkData.filter(network =>
     network.ticker.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(filteredNetworks)
+ 
 
   const handleClickOutside = (event) => {};
 
@@ -266,10 +274,7 @@ const SwapForm = () => {
     }
   };
 
-  const handlePrivacyMode = () => {
-    setPrivacyMode(prevMode => !prevMode);
-    fetchExchangeRate();
-  };
+  
 
   return (
     <div className="swap-container">
@@ -423,10 +428,10 @@ const SwapForm = () => {
       {hasError && <div className="error-message">{errorMessage}</div>}
 
       <div className="footer">
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+        <a href="https://x.com/tonmixbot" target="_blank" rel="noopener noreferrer">
           <img src={twitterIcon} alt="Twitter" className="footer-icon" />
         </a>
-        <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">
+        <a href="https://t.me/tonmixerchat" target="_blank" rel="noopener noreferrer">
           <img src={telegramIcon} alt="Telegram" className="footer-icon" />
         </a>
       </div>
