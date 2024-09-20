@@ -5,7 +5,7 @@ html, body {
   overflow-y: auto; 
 }
 body {
-  padding-bottom: 150px; /* Adjust based on your layout */
+  padding-bottom: 150px; 
 }
 input, textarea {
   font-size: 16px;
@@ -122,21 +122,21 @@ input, textarea {
 
 .search-input {
   width: calc(90% - 16px);
-  padding: 10px; /* Increased padding for a more comfortable feel */
+  padding: 10px; 
   margin-bottom: 8px; 
   margin-left: 8px;
-  margin-top: 8px;/* Increased margin for better spacing */
-  border: 1px solid #bbb; /* Slightly darker border for better contrast */
-  border-radius: 8px; /* More rounded corners */
-  background-color: #f9f9f9; /* Light background color for contrast */
-  color: #333; /* Darker text color for better readability */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for focus state */
+  margin-top: 8px;
+  border: 1px solid #bbb;
+  border-radius: 8px; 
+  background-color: #f9f9f9; 
+  color: #333; 
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .search-input:focus {
-  border-color: #209987; /* Highlight border color on focus */
-  box-shadow: 0 0 5px rgba(32, 153, 135, 0.5); /* Subtle shadow for emphasis */
-  outline: none; /* Remove default outline */
+  border-color: #209987; 
+  box-shadow: 0 0 5px rgba(32, 153, 135, 0.5); 
+  outline: none; 
 }
 
 .loading-text {
@@ -162,7 +162,7 @@ input, textarea {
   color: #ffffff;
   border: none;
   border-radius: 30px;
-  font-size: 1rem; /* Relative font size */
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 10px;
@@ -191,16 +191,16 @@ input, textarea {
 
   .exchange-button {
     padding: 12px;
-    font-size: 0.875rem; /* Relative font size */
+    font-size: 0.875rem; 
   }
 
   .input-group label {
-    font-size: 1rem; /* Relative font size */
+    font-size: 1rem;
   }
 
   .info-text,
   .warning-text {
-    font-size: 0.6875rem; /* Relative font size */
+    font-size: 0.6875rem; 
   }
 
   .social-links {
@@ -232,14 +232,14 @@ input, textarea {
   }
 
   .social-links i {
-    font-size: 1.25rem; /* Relative font size */
+    font-size: 1.25rem; 
     color: #2f4f2f;
   }
 
   .footer-text {
     margin-top: 20px;
     text-align: center;
-    font-size: 0.75rem; /* Relative font size */
+    font-size: 0.75rem; 
     color: #2f4f2f;
     padding-bottom: 10px;
   }
@@ -250,7 +250,7 @@ input, textarea {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  font-size: 1rem; /* Relative font size */
+  font-size: 1rem;
   margin-top: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   outline: none;
@@ -420,5 +420,5 @@ input, textarea {
   font-size: 0.9em;
 }
 .input-group .third-input {
-  margin-top: 20px; /* Adjust the value as needed */
+  margin-top: 20px;  
 }
