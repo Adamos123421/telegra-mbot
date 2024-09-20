@@ -75,6 +75,7 @@ input, textarea {
 
 .dropdown-header {
   display: flex;
+ 
   justify-content: space-between;
   align-items: center;
   padding: 10px;
@@ -83,6 +84,7 @@ input, textarea {
   background-color: #e8f5e8;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 .dropdown-header:hover {
@@ -91,13 +93,14 @@ input, textarea {
 
 .dropdown-menu {
   position: absolute;
-  width: calc(100% - 2px);
+  margin-top: 100px;
+  width: calc(84% - 2px);
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid #d4d4d4;
   border-radius: 4px;
   background: linear-gradient(180deg, #e8f5e8, #d4e8d4);
-  z-index: 1000;
+  z-index: 100;
   display: none;
   transform-origin: top center;
   animation: dropdown-open 0.3s ease forwards;
@@ -118,11 +121,22 @@ input, textarea {
 }
 
 .search-input {
-  width: calc(100% - 16px);
-  padding: 8px;
-  margin-bottom: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: calc(90% - 16px);
+  padding: 10px; /* Increased padding for a more comfortable feel */
+  margin-bottom: 8px; 
+  margin-left: 8px;
+  margin-top: 8px;/* Increased margin for better spacing */
+  border: 1px solid #bbb; /* Slightly darker border for better contrast */
+  border-radius: 8px; /* More rounded corners */
+  background-color: #f9f9f9; /* Light background color for contrast */
+  color: #333; /* Darker text color for better readability */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for focus state */
+}
+
+.search-input:focus {
+  border-color: #209987; /* Highlight border color on focus */
+  box-shadow: 0 0 5px rgba(32, 153, 135, 0.5); /* Subtle shadow for emphasis */
+  outline: none; /* Remove default outline */
 }
 
 .loading-text {
@@ -352,12 +366,7 @@ input, textarea {
 .switchs.on .switch-toggles {
   transform: translateX(30px);
 }
-.privacy-label {
-  position: absolute;
-  font-size: 0.75rem; /* Adjust size as needed */
-  color: white;
-  pointer-events: none; /* Prevents clicks from triggering the label */
-}
+
 .switch-container {
   display: flex;
   align-items: center;
