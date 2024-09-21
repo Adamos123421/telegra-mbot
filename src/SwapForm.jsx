@@ -342,7 +342,7 @@ const SwapForm = () => {
         </div>
       </div>
       <div className="swap-icon" onClick={() => {
-        const temp = selectedToNetwork;
+        const temp = selectedFromNetwork;
         setSelectedFromNetwork(selectedToNetwork);
         setSelectedToNetwork(temp);
       }}>
