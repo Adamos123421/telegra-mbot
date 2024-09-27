@@ -28,16 +28,16 @@ const SwapForm = () => {
   const toDropdownRef = useRef(null);
   const debounceTimer = useRef(null);
 
-  const proxyUrl = 'https://api.allorigins.win/get?url=';
-  const networkDataUrl = 'https://getcurrencies-pwil4mmbgq-uc.a.run.app/';
-
+ 
   useEffect(() => {
     const fetchNetworks = async () => {
       try {
-        const targetUrl = encodeURIComponent(networkDataUrl);
-        const response = await fetch(proxyUrl + targetUrl);
-        const data = await response.json();
-        const result = JSON.parse(data.contents);
+        
+        const response = await fetch("./tickers.json");
+        console.log(response)
+        const result = await response.json();
+
+      
         if (result.status === 200) {
           setNetworkData(result.data);
           if (result.data.length > 0) {
