@@ -170,7 +170,7 @@ function TokenCard({ token, onClick }) {
 }
 
 function App() {
-  const [currentSection, setCurrentSection] = useState('chest');  // Track the current section
+  const [currentSection, setCurrentSection] = useState('exchange');  // Track the current section
   const walletAddress = useTonAddress();  // Get the wallet address using the useTonAddress hook
 
   useEffect(() => {
