@@ -30,6 +30,7 @@ function Exchange() {
   const debounceTimer = useRef(null);
   const [loadingRate, setLoadingRate] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [loadings,setloadings]=useState(false)
   // Privacy mode state: 'standard' or 'private'
  
   useEffect(() => {
@@ -187,6 +188,7 @@ function Exchange() {
     setErrorMessage('');
   
     try {
+      setloadings(true)
       const response = await fetch('/api/bridge', {
         method: 'POST',
         headers: {
@@ -201,6 +203,7 @@ function Exchange() {
         if (result.status === 500) {
           
           setErrorMessage(result.data);
+          setloadings(false)
        
         } else {
           Telegram.WebApp.openTelegramLink('https://t.me/ton_mix_bot');
@@ -210,16 +213,16 @@ function Exchange() {
         }
       } else {
         console.error('Error creating exchange:', result);
-      
+        setloadings(false)
         setErrorMessage(`Error creating exchange: ${result.data}`);
        
       }
     } catch (error) {
-      
+      setloadings(false)
       setErrorMessage('id');
       
     } finally {
-      
+      setloadings(false)
     }
   };
 
@@ -409,7 +412,7 @@ function Exchange() {
           onClick={handleExchange} 
           
         >
-          Exchange
+          {loadings ? 'sending..' : 'exchange'}
         </Button>
       </VStack>
 
