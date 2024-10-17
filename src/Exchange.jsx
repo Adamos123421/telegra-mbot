@@ -260,7 +260,7 @@ function Exchange() {
 </HStack>
         
         <Text fontSize="md" color="gray.400">
-          quick & easy, just swap
+          Simple & Private, Just Mixer It
         </Text>
 
         {/* Privacy Mode Toggle - Entire HStack is clickable */}
