@@ -468,11 +468,11 @@ function Exchange() {
     </Modal>
     <Box mt={170} p={10}>
         <HStack spacing={40}>
-          <Button as="a" href="https://twitter.com/yourTwitterLink" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
+          <Button as="a" href="x.com/tonmixbot" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
            
             <Text ml={2}>Twitter</Text>
           </Button>
-          <Button as="a" href="https://t.me/yourTelegramLink" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
+          <Button as="a" href="https://t.me/tonmixerchat" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
             
             <Text ml={2}>Telegram</Text>
           </Button>
