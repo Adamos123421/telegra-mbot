@@ -2,7 +2,8 @@ import React, { useState ,useEffect , useRef} from 'react';
 import { Image,
   Box, VStack, Text, Button, Flex, Input, IconButton, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, InputGroup, InputRightElement, HStack
 } from '@chakra-ui/react';
-import { FiArrowDown, FiSearch, FiChevronDown } from 'react-icons/fi';
+import { FiArrowDown, FiSearch, FiChevronDown , } from 'react-icons/fi';
+
 
 import { FaLock } from 'react-icons/fa';  // Lock icon for Private mode
 
@@ -465,8 +466,20 @@ function Exchange() {
         </ModalFooter>
       </ModalContent>
     </Modal>
-  
+    <Box mt={170} p={10}>
+        <HStack spacing={40}>
+          <Button as="a" href="https://twitter.com/yourTwitterLink" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
+           
+            <Text ml={2}>Twitter</Text>
+          </Button>
+          <Button as="a" href="https://t.me/yourTelegramLink" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
+            
+            <Text ml={2}>Telegram</Text>
+          </Button>
+        </HStack>
+      </Box>
     </Box>
+    
   );
 }
 
