@@ -1,26 +1,22 @@
-import React from 'react';
+
+
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import App from './App';
-import './index.css';
+import App from './App.jsx'
+import './index.css'
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-function DetailsPage() {
-  const { number } = useParams();
-
-  return (
-    <div>
-      <h1>Details Page</h1>
-      <p>Unique Number: {number}</p>
-    </div>
-  );
-}
-
+// This manifest is used temporarily for development purposes
+const manifestUrl = 
+  "https://raw.githubusercontent.com/Vodka2134156/STAKING-DAPP/main/public/manifest.json";
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Router>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/details/:number" element={<DetailsPage />} />
-    </Routes>
-  </Router>
-);
+  <TonConnectUIProvider manifestUrl={manifestUrl}>
+  <StrictMode>
+    <App />
+  </StrictMode>,
+  </TonConnectUIProvider>
+)
+
+
+// Render the App component wrapped with TonConnectUIProvider and Router
 
