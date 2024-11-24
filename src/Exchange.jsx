@@ -2,10 +2,11 @@ import React, { useState ,useEffect , useRef} from 'react';
 import { Image,
   Box, VStack, Text, Button, Flex, Input, IconButton, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, InputGroup, InputRightElement, HStack
 } from '@chakra-ui/react';
-import { FiArrowDown, FiSearch, FiChevronDown , } from 'react-icons/fi';
+import { FiSearch, FiChevronDown , } from 'react-icons/fi';
 
 
 import { FaLock } from 'react-icons/fa';  // Lock icon for Private mode
+import { FaArrowsRotate } from 'react-icons/fa6';
 
 
 
@@ -113,10 +114,8 @@ function Exchange() {
       amount: sendAmount,
       fromCurrency: fromToken.toUpperCase(),
       toCurrency: toToken,
-      privacy: privacyMode=== 'private', 
+      privacy: privacyMode === 'private', 
     };
-
-   
 
     try {
       const response = await fetch('/api/estimate', {
@@ -148,7 +147,7 @@ function Exchange() {
 
     debounceTimer.current = setTimeout(() => {
       if (fromNet && toNet && sendAmount) {
-        fetchExchangeRate();
+        fetchExchangeRate(privacyMode);
       } else {
         setReceivedAmount('');
       }
@@ -181,7 +180,7 @@ function Exchange() {
         toCurrency: toToken,
         recipientAddress: recipientAddress.trim(),
         userId:userId ? userId.toString() : null ,
-        privacy: privacyMode=='private',
+        privacy: privacyMode === 'private',
     };
   
    
@@ -260,7 +259,7 @@ function Exchange() {
 </HStack>
         
         <Text fontSize="md" color="gray.400">
-          Simple & Private, Just Mixer It
+          Simple & Private, Just Mix It
         </Text>
 
         {/* Privacy Mode Toggle - Entire HStack is clickable */}
@@ -337,12 +336,22 @@ function Exchange() {
         <Flex justify="center" align="center" w="100%" mt={0}>
           <IconButton
             aria-label="Swap tokens"
-            icon={<FiArrowDown />}
+            icon={<FaArrowsRotate />}
             size="40"
             variant="ghost"
             color="gray.400"
             _hover={{ color: 'white' }}
-            
+            onClick={() => {
+              const _toToken = toToken;
+              const _toNet = toNet;
+              const _fromToken = fromToken;
+              const _fromNet = fromNet;
+              setFromToken(_toToken);
+              setFromNet(_toNet);
+              setToToken(_fromToken);
+              setToNet(_fromNet);
+              onClose();
+            }}
           />
         </Flex>
 
@@ -351,8 +360,8 @@ function Exchange() {
           <Text color="gray.400">You Get</Text>
           <Flex alignItems="center" bg="gray.700" p={3} borderRadius="25" position="relative">
             <Input
-              placeholder="0"
-              value={loadingRate ? 'calculating...' : receiveAmount}
+              placeholder={loadingRate ? 'Calculating...' : '0'}
+              value={loadingRate ? '' : receiveAmount}
               readOnly
               size="lg"
               variant="unstyled"
@@ -380,7 +389,7 @@ function Exchange() {
         </VStack>
         {/* Fees Section */}
         <Text color="gray.400" mt={1}>
-          Estimated Fees: {loadingRate ? '...' : fees} usd
+          Estimated Fees: {loadingRate ? '...' : fees !== '' && fees !== '0' && fees !== undefined && fees !== null ? `$${fees}` : '$0.00'}
         </Text>
 
         {/* Recipient Address Section */}
@@ -412,7 +421,7 @@ function Exchange() {
           onClick={handleExchange} 
           
         >
-          {loadings ? 'sending..' : 'exchange'}
+          {loadings ? 'Bridging...' : 'Bridge'}
         </Button>
       </VStack>
 

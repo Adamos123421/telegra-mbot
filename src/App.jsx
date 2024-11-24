@@ -125,7 +125,7 @@ function Settings() {
   return (
     <VStack spacing={6} mt={10}>
       <Text fontSize="xl" color="gray.400">
-        Settings Section (Comming Soon)
+        Settings (Coming Soon)
       </Text>
     </VStack>
   );
@@ -134,7 +134,7 @@ function Chests() {
   return (
     <VStack spacing={6} mt={10}>
       <Text fontSize="xl" color="gray.400">
-        Chest Mistery Utility (Comming Soon)
+        Secret Utility (Coming Soon)
       </Text>
     </VStack>
   );
