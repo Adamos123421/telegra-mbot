@@ -106,6 +106,11 @@ function Exchange() {
     
   }, [privacyMode]); 
   const fetchExchangeRate = async (privacyMode) => {
+    if (!fromNet || !toNet || !sendAmount) {
+      setReceivedAmount('');
+      setFeeAmount('');
+      return;
+    }
     setLoadingRate(true);
     console.log(privacyMode)
     const requestBody = {
@@ -150,6 +155,7 @@ function Exchange() {
         fetchExchangeRate(privacyMode);
       } else {
         setReceivedAmount('');
+        setFeeAmount('');
       }
     }, 500);
 
