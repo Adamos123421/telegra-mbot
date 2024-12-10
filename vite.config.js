@@ -1,24 +1,36 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react'
 
+const debug = false;
+
 export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
       '/api/estimate': {
-        target: 'https://estimate-pwil4mmbgq-uc.a.run.app',
+        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/estimate`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/estimate/, ''),
       },
       '/api/currencies': {
-        target: 'https://getcurrencies-pwil4mmbgq-uc.a.run.app/',
+        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/currencies`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/currencies/, ''),
       },
       '/api/bridge': {
-        target: 'https://bridgeandmessage-pwil4mmbgq-uc.a.run.app',
+        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/exchange`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/bridge/, ''),
+      },
+      '/api/data': {
+        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/data`,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/data/, ''),
+      },
+      '/api/ping': {
+        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/ping`,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/ping/, ''),
       },
     },
   },

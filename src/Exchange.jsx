@@ -32,6 +32,16 @@ function Exchange() {
   const [loadingRate, setLoadingRate] = useState(false);
   const [userId, setUserId] = useState(null);
   const [loadings,setloadings]=useState(false)
+
+  const [minAmount,setMinAmount]=useState(0)
+  const [maxAmount,setMaxAmount]=useState(0)
+  const [inEstimate, setInEstimate] = useState(0);
+  const [outEstimate, setOutEstimate] = useState(0);
+  const [estimatedFee, setEstimatedFee] = useState(null);
+  const [estimatedFeeUsd, setEstimatedFeeUsd] = useState(0);
+  const [estimatedTime, setEstimatedTime] = useState(null);
+  const [warningMessage, setWarningMessage] = useState(null);
+
   // Privacy mode state: 'standard' or 'private'
  
   useEffect(() => {
@@ -45,16 +55,6 @@ function Exchange() {
       }
     }
   }, []);
-  useEffect(() => {
-    const fetchTokens = async () => {
-      const response = await fetch('./tickers.json');
-      const data = await response.json();
-      setTokens(data);
-       // Initially set the filtered tokens to the full list
-    };
-    fetchTokens();
-  }, []);
-  
 
   const handleTokenSelection = (symbol,net) => {
     if (selectingToken === 'from') {
@@ -75,12 +75,18 @@ function Exchange() {
 
   // Filter tokens for the "from" token modal
   const filteredFromTokens = tokens.filter((token) =>
-    token.ticker.toLowerCase().includes(fromSearchQuery.toLowerCase())
+    fromSearchQuery.toLowerCase().split(' ').some(query => 
+      token.ticker.toLowerCase().includes(query) || 
+      token.network.toLowerCase().includes(query)
+    )
   );
 
-  // Filter tokens for the "to" token modal based only on "ticker"
+  // Filter tokens for the "to" token modal with same prioritization
   const filteredToTokens = tokens.filter((token) =>
-    token.ticker.toLowerCase().includes(toSearchQuery.toLowerCase())
+    toSearchQuery.toLowerCase().split(' ').some(query => 
+      token.ticker.toLowerCase().includes(query) || 
+      token.network.toLowerCase().includes(query)
+    )
   );
 
   // Set the filtered tokens based on whether the "from" or "to" modal is open
@@ -96,23 +102,44 @@ function Exchange() {
       const response = await fetch('./tickers.json');
       const data = await response.json();
       setTokens(data);
-       // Initially set the filtered tokens to the full list
+      setErrorMessage('');
+      
+      const currencyResponse = await fetch('/api/currencies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const currencyResult = await currencyResponse.json();
+      const currencyData = currencyResult.data;
+      setTokens(currencyData);
+      setErrorMessage('');
     };
     fetchTokens();
   }, []);
  
   useEffect(() => {
     fetchExchangeRate(privacyMode);
-    
-  }, [privacyMode]); 
+    setErrorMessage('');
+  }, [privacyMode, fromToken, fromNet, toToken, toNet, sendAmount]); 
+
   const fetchExchangeRate = async (privacyMode) => {
-    if (!fromNet || !toNet || !sendAmount) {
-      setReceivedAmount('');
-      setFeeAmount('');
+    clearTimeout(debounceTimer.current);
+    setReceivedAmount('');
+    setFeeAmount('');
+    setMinAmount(0);
+    setMaxAmount(0);
+    setInEstimate(0);
+    setOutEstimate(0);
+    setEstimatedFee(null);
+    setEstimatedFeeUsd(0);
+    setEstimatedTime(null);
+    setWarningMessage(null);
+    if (!toToken || !fromToken || !fromNet || !toNet || !sendAmount) {
       return;
     }
     setLoadingRate(true);
-    console.log(privacyMode)
     const requestBody = {
       fromNetwork: fromNet,
       toNetwork: toNet,
@@ -132,17 +159,43 @@ function Exchange() {
       });
 
       const result = await response.json();
+      if (result.status === 500) {
+        const minAmount = result.data.range.minAmount;
+        const maxAmount = result.data.range.maxAmount;
+        console.log(`Min amount is ${minAmount}. Max amount is ${maxAmount !== null && maxAmount !== -1 ? maxAmount : 'unlimited'}`);
+        if (minAmount) {
+          setErrorMessage(`Min amount is ${minAmount}. Max amount is ${maxAmount !== null && maxAmount !== -1 ? maxAmount : 'unlimited'}`);
+        } else {
+          console.error('Error fetching exchange rate 3:', result);
+        }
+        return;
+      }
+
+      const minAmount = result.data.minAmount;
+      const maxAmount = result.data.maxAmount;
+      if (sendAmount < minAmount || (maxAmount > -1 && sendAmount > maxAmount)) {
+        setErrorMessage(`Min amount is ${minAmount}. Max amount is ${maxAmount !== null && maxAmount !== -1 ? maxAmount : 'unlimited'}`);
+        return;
+      }
 
       if (response.ok) {
         setFeeAmount(result.data.fee);
         setReceivedAmount(result.data.amount);
+        setMinAmount(result.data.minAmount);
+        setMaxAmount(result.data.maxAmount);
+        setInEstimate(result.data.inEstimate);
+        setOutEstimate(result.data.outEstimate);
+        setEstimatedFee(result.data.estimatedFee);
+        setEstimatedFeeUsd(result.data.estimatedFeeUsd);
+        setEstimatedTime(result.data.estimatedTime);
+        setWarningMessage(result.data.warningMessage);
       } else {
-        console.error('Error fetching exchange rate:', result);
+        console.error('Error fetching exchange rate 1:', result);
       }
     } catch (error) {
-      console.error('Error fetching exchange rate:', error);
+      console.error('Error fetching exchange rate: 2', error);
     } finally {
-        setLoadingRate(false);
+      setLoadingRate(false);
     }
   };
   useEffect(() => {
@@ -151,12 +204,10 @@ function Exchange() {
     }
 
     debounceTimer.current = setTimeout(() => {
-      if (fromNet && toNet && sendAmount) {
-        fetchExchangeRate(privacyMode);
-      } else {
-        setReceivedAmount('');
-        setFeeAmount('');
+      if (!toToken || !fromToken || !fromNet || !toNet || !sendAmount) {
+        return;
       }
+      fetchExchangeRate(privacyMode);
     }, 500);
 
     return () => {
@@ -164,10 +215,12 @@ function Exchange() {
     };
   }, [fromNet, toNet, sendAmount]);
   const handleExchange = async () => {
+    if (sendAmount < minAmount || (maxAmount > -1 && sendAmount > maxAmount)) {
+      setErrorMessage(`Min amount is ${minAmount}. Max amount is ${maxAmount !== null && maxAmount !== -1 ? maxAmount : 'unlimited'}`);
+      return;
+    }
     if (!sendAmount || parseFloat(sendAmount) <= 0) {
-      ;
       setErrorMessage('Please enter the amount you want to send.');
-      
       return;
     }
   
@@ -187,6 +240,12 @@ function Exchange() {
         recipientAddress: recipientAddress.trim(),
         userId:userId ? userId.toString() : null ,
         privacy: privacyMode === 'private',
+        inEstimate,
+        outEstimate,
+        estimatedFee,
+        estimatedFeeUsd,
+        estimatedTime,
+        warningMessage
     };
   
    
@@ -260,7 +319,7 @@ function Exchange() {
         <HStack spacing={4} alignItems="center">
   <Image src="./favicon-1.png" alt="Logo" boxSize="50px" />
   <Text fontSize="2xl" fontWeight="bold">
-    Mixer Exchange
+    Mixer Bridge
   </Text>
 </HStack>
         
@@ -425,7 +484,6 @@ function Exchange() {
           size="lg"
           isFullWidth
           onClick={handleExchange} 
-          
         >
           {loadings ? 'Bridging...' : 'Bridge'}
         </Button>
@@ -484,7 +542,7 @@ function Exchange() {
         </ModalFooter>
       </ModalContent>
     </Modal>
-    <Box mt={170} p={10}>
+    <Box mt={0} p={10}>
         <HStack spacing={40}>
           <Button as="a" href="https://x.com/tonmixbot" target="_blank" variant="link" color="gray.400" _hover={{ color: "white" }}>
            
