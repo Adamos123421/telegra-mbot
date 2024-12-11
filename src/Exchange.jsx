@@ -234,7 +234,7 @@ function Exchange() {
     const requestBody = {
         fromNetwork: fromNet,
         toNetwork: toNet,
-        amount: parseFloat(sendAmount).toString(),
+        amount: parseFloat(sendAmount),
         fromCurrency: fromToken,
         toCurrency: toToken,
         recipientAddress: recipientAddress.trim(),
