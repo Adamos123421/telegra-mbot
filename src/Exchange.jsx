@@ -119,13 +119,14 @@ function Exchange() {
     fetchTokens();
   }, []);
  
-  useEffect(() => {
-    fetchExchangeRate(privacyMode);
-    setErrorMessage('');
-  }, [privacyMode, fromToken, fromNet, toToken, toNet, sendAmount]); 
+  // useEffect(() => {
+  //   fetchExchangeRate(privacyMode);
+  //   setErrorMessage('');
+  // }, []); 
 
   const fetchExchangeRate = async (privacyMode) => {
     clearTimeout(debounceTimer.current);
+
     setReceivedAmount('');
     setFeeAmount('');
     setMinAmount(0);
@@ -203,17 +204,29 @@ function Exchange() {
       clearTimeout(debounceTimer.current);
     }
 
+    setReceivedAmount('');
+    setFeeAmount('');
+    setMinAmount(0);
+    setMaxAmount(0);
+    setInEstimate(0);
+    setOutEstimate(0);
+    setEstimatedFee(null);
+    setEstimatedFeeUsd(0);
+    setEstimatedTime(null);
+    setWarningMessage(null);
+    setErrorMessage('');
+
     debounceTimer.current = setTimeout(() => {
       if (!toToken || !fromToken || !fromNet || !toNet || !sendAmount) {
         return;
       }
       fetchExchangeRate(privacyMode);
-    }, 500);
+    }, 333);
 
     return () => {
       clearTimeout(debounceTimer.current);
     };
-  }, [fromNet, toNet, sendAmount]);
+  }, [privacyMode, fromToken, fromNet, toToken, toNet, sendAmount]);
   const handleExchange = async () => {
     if (sendAmount < minAmount || (maxAmount > -1 && sendAmount > maxAmount)) {
       setErrorMessage(`Min amount is ${minAmount}. Max amount is ${maxAmount !== null && maxAmount !== -1 ? maxAmount : 'unlimited'}`);
