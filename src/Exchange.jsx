@@ -105,7 +105,7 @@ function Exchange() {
       setErrorMessage('');
       
       const currencyResponse = await fetch('/api/currencies', {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         }
