@@ -622,7 +622,7 @@ function Exchange() {
         maxH="80vh" // Fix the size and make it scrollable
       >
         <ModalHeader>Select Token</ModalHeader>
-        <ModalBody overflowY="auto">  {/* Scrollable content */}
+        <ModalBody maxH="44vh" overflowY="auto">  {/* Scrollable content */}
           <InputGroup mb={4}>
             <Input 
               placeholder="Search assets or address" 
