@@ -74,20 +74,126 @@ function Exchange() {
   };
 
   // Filter tokens for the "from" token modal
-  const filteredFromTokens = tokens.filter((token) =>
-    fromSearchQuery.toLowerCase().split(' ').some(query => 
-      token.ticker.toLowerCase().includes(query) || 
-      token.network.toLowerCase().includes(query)
-    )
-  );
+  const filteredFromTokens = tokens
+    .map(token => {
+      const queries = fromSearchQuery.toLowerCase().split(' ');
+      let priority = 0;
+      
+      // Check if any query terms match both ticker and network exactly
+      queries.forEach(query => {
+        if (token.ticker.toLowerCase() === query && token.network.toLowerCase() === query) {
+          priority = 4;
+        }
+      });
+
+      // Check if separate query terms match ticker and network exactly
+      if (queries.length === 2) {
+        if ((token.ticker.toLowerCase() === queries[0] && token.network.toLowerCase() === queries[1]) ||
+            (token.ticker.toLowerCase() === queries[1] && token.network.toLowerCase() === queries[0])) {
+          priority = 4;
+        }
+      }
+
+      // Partial matches
+      if (priority === 0) {
+        const matchBoth = queries.some(query =>
+          token.ticker.toLowerCase().includes(query) &&
+          token.network.toLowerCase().includes(query)
+        );
+        const matchTickerExact = queries.some(query => 
+          token.ticker.toLowerCase() === query
+        );
+        const matchNetworkExact = queries.some(query =>
+          token.network.toLowerCase() === query
+        );
+        const matchTicker = queries.some(query => 
+          token.ticker.toLowerCase().includes(query)
+        );
+        const matchNetwork = queries.some(query =>
+          token.network.toLowerCase().includes(query)
+        );
+
+        // Check if all query terms match the ticker
+        const allTermsMatchTicker = queries.every(query =>
+          token.ticker.toLowerCase().includes(query)
+        );
+
+        if (matchTickerExact && matchNetworkExact) priority = 3;
+        else if (matchBoth) priority = 2;
+        else if (allTermsMatchTicker) priority = 1.5; // Higher priority for tokens matching all search terms
+        else if (matchTickerExact || matchNetworkExact) priority = 1;
+        else if (matchTicker || matchNetwork) priority = 0.5;
+      }
+      
+      return {
+        token,
+        priority
+      };
+    })
+    .filter(item => item.priority > 0)
+    .sort((a, b) => b.priority - a.priority)
+    .map(item => item.token);
 
   // Filter tokens for the "to" token modal with same prioritization
-  const filteredToTokens = tokens.filter((token) =>
-    toSearchQuery.toLowerCase().split(' ').some(query => 
-      token.ticker.toLowerCase().includes(query) || 
-      token.network.toLowerCase().includes(query)
-    )
-  );
+  const filteredToTokens = tokens
+    .map(token => {
+      const queries = toSearchQuery.toLowerCase().split(' ');
+      let priority = 0;
+      
+      // Check if any query terms match both ticker and network exactly
+      queries.forEach(query => {
+        if (token.ticker.toLowerCase() === query && token.network.toLowerCase() === query) {
+          priority = 4;
+        }
+      });
+
+      // Check if separate query terms match ticker and network exactly
+      if (queries.length === 2) {
+        if ((token.ticker.toLowerCase() === queries[0] && token.network.toLowerCase() === queries[1]) ||
+            (token.ticker.toLowerCase() === queries[1] && token.network.toLowerCase() === queries[0])) {
+          priority = 4;
+        }
+      }
+
+      // Partial matches
+      if (priority === 0) {
+        const matchBoth = queries.some(query =>
+          token.ticker.toLowerCase().includes(query) &&
+          token.network.toLowerCase().includes(query)
+        );
+        const matchTickerExact = queries.some(query => 
+          token.ticker.toLowerCase() === query
+        );
+        const matchNetworkExact = queries.some(query =>
+          token.network.toLowerCase() === query
+        );
+        const matchTicker = queries.some(query => 
+          token.ticker.toLowerCase().includes(query)
+        );
+        const matchNetwork = queries.some(query =>
+          token.network.toLowerCase().includes(query)
+        );
+
+        // Check if all query terms match the ticker
+        const allTermsMatchTicker = queries.every(query =>
+          token.ticker.toLowerCase().includes(query)
+        );
+
+        if (matchTickerExact && matchNetworkExact) priority = 3;
+        else if (matchBoth) priority = 2;
+        else if (allTermsMatchTicker) priority = 1.5; // Higher priority for tokens matching all search terms
+        else if (matchTickerExact || matchNetworkExact) priority = 1;
+        else if (matchTicker || matchNetwork) priority = 0.5;
+      }
+      
+      return {
+        token,
+        priority
+      };
+    })
+    .filter(item => item.priority > 0)
+    .sort((a, b) => b.priority - a.priority)
+    .map(item => item.token);
 
   // Set the filtered tokens based on whether the "from" or "to" modal is open
   const filteredTokens = selectingToken === 'from' ? filteredFromTokens : filteredToTokens;
