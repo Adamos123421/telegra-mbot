@@ -1,31 +1,31 @@
 
 [[redirects]]
   from = "/api/estimate"
-  to = "http://34.30.82.237 :3000/estimate"
+  to = "http://34.30.82.237:3000/estimate"
   status = 200
   force = true
   headers = {Access-Control-Allow-Origin = "*"}
 [[redirects]]
   from = "/api/bridge"
-  to = "http://34.30.82.237 :3000/exchange"
+  to = "http://34.30.82.237:3000/exchange"
   status = 200
   force = true
   headers = {Access-Control-Allow-Origin = "*"}
 [[redirects]]
   from = "/api/currencies"
-  to = "http://34.30.82.237 :3000/currencies"
+  to = "http://34.30.82.237:3000/currencies"
   status = 200
   force = true
   headers = {Access-Control-Allow-Origin = "*"}
 [[redirects]]
   from = "/api/data"
-  to = "http://34.30.82.237 :3000/data"
+  to = "http://34.30.82.237:3000/data"
   status = 200
   force = true
   headers = {Access-Control-Allow-Origin = "*"}
 [[redirects]]
   from = "/api/ping"
-  to = "http://34.30.82.237 :3000/ping"
+  to = "http://34.30.82.237:3000/ping"
   status = 200
   force = true
   headers = {Access-Control-Allow-Origin = "*"}
