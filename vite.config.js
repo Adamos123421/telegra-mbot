@@ -8,27 +8,27 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/estimate': {
-        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/estimate`,
+        target: `http://${debug ? 'localhost:3000' : '34.30.82.237 :3000'}/estimate`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/estimate/, ''),
       },
       '/api/currencies': {
-        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/currencies`,
+        target: `http://${debug ? 'localhost:3000' : '34.30.82.237 :3000'}/currencies`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/currencies/, ''),
       },
       '/api/bridge': {
-        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/exchange`,
+        target: `http://${debug ? 'localhost:3000' : '34.30.82.237 :3000'}/exchange`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/bridge/, ''),
       },
       '/api/data': {
-        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/data`,
+        target: `http://${debug ? 'localhost:3000' : '34.30.82.237 :3000'}/data`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/data/, ''),
       },
       '/api/ping': {
-        target: `http://${debug ? 'localhost:3000' : '34.123.207.95:3000'}/ping`,
+        target: `http://${debug ? 'localhost:3000' : '34.30.82.237 :3000'}/ping`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/ping/, ''),
       },
