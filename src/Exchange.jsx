@@ -2,9 +2,7 @@ import React, { useState ,useEffect , useRef} from 'react';
 import { Image,
   Box, VStack, Text, Button, Flex, Input, IconButton, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, InputGroup, InputRightElement, HStack
 } from '@chakra-ui/react';
-import { FiSearch, FiChevronDown , } from 'react-icons/fi';
-
-
+import { FiSearch, FiChevronDown, FiPlus, FiMinus } from 'react-icons/fi';
 import { FaLock } from 'react-icons/fa';  // Lock icon for Private mode
 import { FaArrowsRotate } from 'react-icons/fa6';
 
@@ -25,8 +23,8 @@ function Exchange() {
   const [selectingToken, setSelectingToken] = useState(''); // 'from' or 'to'
   const [fromSearchQuery, setFromSearchQuery] = useState(''); // Search query for "from" token
   const [toSearchQuery, setToSearchQuery] = useState(''); // Search query for "to" token
-  const [privacyMode, setPrivacyMode] = useState('standard');
-  const [recipientAddress, setRecipientAddress] = useState('');
+  const [privacyMode, setPrivacyMode] = useState('fast');
+  const [recipientAddress, setRecipientAddress] = useState(''); // Single recipient address
   const [tokens, setTokens] = useState([]);
   const debounceTimer = useRef(null);
   const [loadingRate, setLoadingRate] = useState(false);
@@ -200,7 +198,7 @@ function Exchange() {
 
   // Function to toggle privacy mode on clicking anywhere on the switch
   const togglePrivacyMode = () => {
-    setPrivacyMode((prevMode) => (prevMode === 'standard' ? 'private' : 'standard'));
+    setPrivacyMode((prevMode) => (prevMode === 'fast' ? 'standard' : prevMode === 'standard' ? 'private' : 'fast'));
   };
   useEffect(() => {
     
@@ -248,12 +246,13 @@ function Exchange() {
     }
     setLoadingRate(true);
     const requestBody = {
-      fromNetwork: fromNet,
-      toNetwork: toNet,
+      fromToken,
+      toToken,
+      fromNet,
+      toNet,
       amount: sendAmount,
-      fromCurrency: fromToken.toUpperCase(),
-      toCurrency: toToken,
-      privacy: privacyMode === 'private', 
+      privacyMode,
+      recipientAddress: recipientAddress.trim() !== '' ? recipientAddress : '', // Use single address
     };
 
     try {
@@ -344,9 +343,7 @@ function Exchange() {
     }
   
     if (!recipientAddress.trim()) {
-     
-      setErrorMessage('Please enter the recipient address.');
-      
+      setErrorMessage('Please enter a recipient address.');
       return;
     }
 
@@ -356,9 +353,9 @@ function Exchange() {
         amount: parseFloat(sendAmount),
         fromCurrency: fromToken,
         toCurrency: toToken,
-        recipientAddress: recipientAddress.trim(),
-        userId:userId ? userId.toString() : null ,
-        privacy: privacyMode === 'private',
+        recipientAddress: recipientAddress, // Single address
+        userId: userId ? userId.toString() : null,
+        privacy: privacyMode,
         inEstimate,
         outEstimate,
         estimatedFee,
@@ -409,7 +406,6 @@ function Exchange() {
     }
   };
 
-
   return (
     <Box 
   minH="100vh" 
@@ -432,8 +428,8 @@ function Exchange() {
         borderRadius="20" 
         w={["88%", "50%", "90%"]}
       
-        boxShadow={privacyMode === 'private' ? "0px 0px 15px rgba(0, 255, 0, 0.6)" : "0px 0px 15px rgba(144,212,238)"}
-        border={privacyMode === 'private' ? "1px solid rgba(0, 255, 0, 0.5)" : "1px solid rgba(144,212,238)"}
+        boxShadow={privacyMode === 'fast' ? "0px 0px 15px rgba(255, 255, 255, 0.6)" : privacyMode === 'private' ? "0px 0px 15px rgba(0, 255, 0, 0.6)" : "0px 0px 15px rgba(144,212,238)"}
+        border={privacyMode === 'fast' ? "1px solid rgba(255, 255, 255, 0.5)" : privacyMode === 'private' ? "1px solid rgba(0, 255, 0, 0.5)" : "1px solid rgba(144,212,238)"}
       >
         <HStack spacing={4} alignItems="center">
   <Image src="./favicon-1.png" alt="Logo" boxSize="50px" />
@@ -456,9 +452,19 @@ function Exchange() {
           borderRadius="lg"
         >
           <HStack spacing={0}>
+            {/* Fast Mode Button (appears like a button, but controlled by the parent Box click) */}
+            <Button
+              colorScheme={privacyMode === 'fast' ? 'blue' : 'gray'}
+              variant={privacyMode === 'fast' ? 'solid' : 'ghost'}
+              borderRadius="lg"
+              px={6}
+              pointerEvents="none"  // Disable individual button clicks
+            >
+              💨 Fast
+            </Button>
+
             {/* Standard Mode Button (appears like a button, but controlled by the parent Box click) */}
             <Button
-              
               colorScheme={privacyMode === 'standard' ? 'blue' : 'gray'}
               variant={privacyMode === 'standard' ? 'solid' : 'ghost'}
               borderRadius="lg"
@@ -496,7 +502,7 @@ function Exchange() {
               flex="1"
             />
             {/* Line Separator */}
-            <Divider orientation="vertical" borderColor={privacyMode === 'private' ? "rgba(0, 255, 0, 0.5)" : " rgba(59,114,149)"} h="70%" mx={2} />  {/* Green or Blue hue */}
+            <Divider orientation="vertical" borderColor={privacyMode === 'fast' ? "rgba(255, 255, 255, 0.5)" : privacyMode === 'standard' ? "rgba(0, 255, 0, 0.5)" : " rgba(59,114,149)"} h="70%" mx={2} />  {/* Green or Blue hue */}
             <Button
             onClick={() => openTokenModal('from')}
             size="lg"
@@ -553,7 +559,7 @@ function Exchange() {
               flex="1"
             />
             {/* Line Separator */}
-            <Divider orientation="vertical" borderColor={privacyMode === 'private' ? "rgba(0, 255, 0, 0.5)" : "rgba(59,114,149)"} h="70%" mx={2} />  {/* Green or Blue hue */}
+            <Divider orientation="vertical" borderColor={privacyMode === 'fast' ? "rgba(255, 255, 255, 0.5)" : privacyMode === 'standard' ? "rgba(0, 255, 0, 0.5)" : " rgba(59,114,149)"} h="70%" mx={2} />  {/* Green or Blue hue */}
                         <Button
             onClick={() => openTokenModal('to')}
             size="lg"
@@ -576,19 +582,15 @@ function Exchange() {
           Estimated Fees: {loadingRate ? '...' : fees !== '' && fees !== '0' && fees !== undefined && fees !== null ? `$${fees}` : '$0.00'}
         </Text>
 
-        {/* Recipient Address Section */}
-        <VStack align="stretch" w="100%" spacing={2} mt={4}>
-          <Text color="gray.400">Recipient Address</Text>
+        {/* Single Recipient Address */}
+        <Box w="100%">
+          <Text mb={2}>Recipient Address</Text>
           <Input
             placeholder="Enter recipient address"
             value={recipientAddress}
             onChange={(e) => setRecipientAddress(e.target.value)}
-            size="lg"
-            variant="filled"
-            bg="gray.700"
-            color="white"
           />
-        </VStack>
+        </Box>
 
         {/* Exchange Button */}
         {errorMessage && (  // Show error message if present
@@ -618,7 +620,7 @@ function Exchange() {
         bg="gray.800" 
         color="white" 
         borderRadius="lg" 
-        boxShadow={privacyMode === 'private' ? "0 4px 10px rgba(0, 255, 0, 0.2)" : "0 4px 10px rgba(0, 0, 255, 0.2)"}
+        boxShadow={privacyMode === 'fast' ? "0 4px 10px rgba(255, 255, 255, 0.2)" : privacyMode === 'standard' ? "0 4px 10px rgba(0, 255, 0, 0.2)" : "0 4px 10px rgba(0, 0, 255, 0.2)"}
         maxH="80vh" // Fix the size and make it scrollable
       >
         <ModalHeader>Select Token</ModalHeader>
