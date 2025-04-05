@@ -251,7 +251,7 @@ function Exchange() {
       fromNet,
       toNet,
       amount: sendAmount,
-      privacyMode,
+      privacy: privacyMode,
       recipientAddress: recipientAddress.trim() !== '' ? recipientAddress : '', // Use single address
     };
 
