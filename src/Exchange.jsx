@@ -251,7 +251,7 @@ function Exchange() {
       fromNetwork: fromNet,
       toNetwork: toNet,
       amount: sendAmount,
-      privacy: privacyMode === 'private' ? 'full' : privacyMode,
+      privacy: privacyMode === 'private' ? 'full' : privacyMode === 'standard' ? 'semi' : 'fast',
       // recipientAddress: recipientAddress.trim() !== '' ? recipientAddress : '', // Use single address
     };
 
@@ -356,7 +356,7 @@ function Exchange() {
         toCurrency: toToken,
         recipientAddress: recipientAddress, // Single address
         userId: userId ? userId.toString() : null,
-        privacy: privacyMode === 'private' ? 'full' : privacyMode,
+        privacy: privacyMode === 'private' ? 'full' : privacyMode === 'standard' ? 'semi' : 'fast',
         inEstimate,
         outEstimate,
         estimatedFee,
