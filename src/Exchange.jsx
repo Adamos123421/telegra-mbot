@@ -265,7 +265,7 @@ function Exchange() {
       });
 
       const result = await response.json();
-      console.log(result);
+      console.log(requestBody, result);
       if (result.status === 500) {
         const minAmount = result.data.range.minAmount;
         const maxAmount = result.data.range.maxAmount;
