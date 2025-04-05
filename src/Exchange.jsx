@@ -355,7 +355,7 @@ function Exchange() {
         toCurrency: toToken,
         recipientAddress: recipientAddress, // Single address
         userId: userId ? userId.toString() : null,
-        privacy: privacyMode,
+        privacy: privacyMode !== 'fast' ? privacyMode : false,
         inEstimate,
         outEstimate,
         estimatedFee,
