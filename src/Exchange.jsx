@@ -246,13 +246,13 @@ function Exchange() {
     }
     setLoadingRate(true);
     const requestBody = {
-      fromToken,
-      toToken,
-      fromNet,
-      toNet,
+      fromCurrency: fromToken,
+      toCurrency: toToken,
+      fromNetwork: fromNet,
+      toNetwork: toNet,
       amount: sendAmount,
       privacy: privacyMode,
-      recipientAddress: recipientAddress.trim() !== '' ? recipientAddress : '', // Use single address
+      // recipientAddress: recipientAddress.trim() !== '' ? recipientAddress : '', // Use single address
     };
 
     try {
