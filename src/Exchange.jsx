@@ -461,7 +461,7 @@ function Exchange() {
               px={6}
               pointerEvents="none"  // Disable individual button clicks
             >
-              💨 Fast
+              💨 Standard
             </Button>
 
             {/* Standard Mode Button (appears like a button, but controlled by the parent Box click) */}
@@ -472,7 +472,7 @@ function Exchange() {
               px={6}
               pointerEvents="none"  // Disable individual button clicks
             >
-              😶 Standard
+              😶 Private
             </Button>
 
             {/* Private Mode Button */}
@@ -484,7 +484,7 @@ function Exchange() {
               px={6}
               pointerEvents="none"  // Disable individual button clicks
             >
-              Private
+              XMR
             </Button>
           </HStack>
         </Box>
